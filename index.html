@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UBL 2.1 Invoice - Structure Documentation</title>
+    <title>UBL 2.1 Invoice - Complete Structure Documentation</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             background: white;
             padding: 30px;
@@ -54,6 +54,43 @@
             color: #0366d6;
             font-size: 1.2em;
             margin-bottom: 10px;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid #d1d5da;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #0366d6;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #d1d5da;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f6f8fa;
+            border-color: #0366d6;
         }
 
         table {
@@ -91,7 +128,6 @@
         .card-cell {
             font-family: 'Courier New', monospace;
             font-weight: 600;
-            color: #0366d6;
             white-space: nowrap;
             min-width: 60px;
         }
@@ -107,14 +143,36 @@
         .name-cell {
             font-family: 'Courier New', monospace;
             font-size: 13px;
+            position: relative;
         }
 
-        .indent-0 { padding-left: 12px; font-weight: 600; }
-        .indent-1 { padding-left: 30px; }
-        .indent-2 { padding-left: 50px; }
-        .indent-3 { padding-left: 70px; }
-        .indent-4 { padding-left: 90px; }
-        .indent-5 { padding-left: 110px; }
+        .toggle-btn {
+            cursor: pointer;
+            user-select: none;
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #0366d6;
+            margin-right: 5px;
+        }
+
+        .toggle-btn:hover {
+            color: #0056b3;
+        }
+
+        .no-children {
+            width: 20px;
+            display: inline-block;
+        }
+
+        .indent-0 { padding-left: 12px; font-weight: 600; background-color: #f6f8fa; }
+        .indent-1 { padding-left: 35px; }
+        .indent-2 { padding-left: 60px; background-color: #fafbfc; }
+        .indent-3 { padding-left: 85px; }
+        .indent-4 { padding-left: 110px; background-color: #fafbfc; }
+        .indent-5 { padding-left: 135px; }
+        .indent-6 { padding-left: 160px; background-color: #fafbfc; }
 
         .bullet {
             color: #6a737d;
@@ -127,7 +185,6 @@
             border-radius: 3px;
             font-size: 11px;
             font-weight: 600;
-            margin-left: 5px;
         }
 
         .type-bbie {
@@ -149,23 +206,12 @@
             font-weight: 600;
         }
 
-        .search-box {
-            margin-bottom: 20px;
-            padding: 10px;
-            width: 100%;
-            max-width: 400px;
-            border: 2px solid #d1d5da;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: #0366d6;
+        .hidden {
+            display: none;
         }
 
         .highlight {
-            background-color: #fff3cd;
+            background-color: #fff3cd !important;
         }
 
         .legend {
@@ -188,20 +234,18 @@
             border-radius: 3px;
         }
 
-        @media print {
-            body {
-                background: white;
-            }
-            .container {
-                box-shadow: none;
-            }
+        .collapsed-indicator {
+            color: #6a737d;
+            font-style: italic;
+            font-size: 12px;
+            margin-left: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>UBL 2.1 Invoice - Structure Documentation</h1>
-        <p class="subtitle">Universal Business Language (UBL) Version 2.1 - Invoice Document Type</p>
+        <h1>UBL 2.1 Invoice - Complete Structure Documentation</h1>
+        <p class="subtitle">Universal Business Language (UBL) Version 2.1 - Invoice Document Type with Full Nested Structure</p>
 
         <div class="info-box">
             <h2>About This Document</h2>
@@ -229,342 +273,1823 @@
             </div>
         </div>
 
-        <input type="text" class="search-box" id="searchBox" placeholder="Search elements (e.g., 'TaxTotal', 'Invoice Line')...">
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search elements (e.g., 'Party', 'TaxTotal', 'InvoiceLine')...">
+            <button class="btn" onclick="expandAll()">Expand All</button>
+            <button class="btn" onclick="collapseAll()">Collapse All</button>
+            <button class="btn" onclick="expandLevel(2)">Expand Level 1-2</button>
+        </div>
 
         <table id="structureTable">
             <thead>
                 <tr>
                     <th style="width: 80px;">Card</th>
-                    <th style="width: 350px;">Element Name</th>
+                    <th style="width: 450px;">Element Name</th>
                     <th style="width: 120px;">Type</th>
                     <th>Business Description</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
+            <tbody id="tableBody">
+                <!-- Root -->
+                <tr data-level="0" data-id="invoice">
                     <td class="card-cell"><span class="required">1..1</span></td>
-                    <td class="name-cell indent-0">Invoice</td>
+                    <td class="name-cell indent-0">
+                        <span class="toggle-btn" onclick="toggleChildren('invoice')">▼</span>
+                        Invoice
+                    </td>
                     <td>ABIE</td>
                     <td class="description-cell">Root element. A document used to request payment.</td>
                 </tr>
-                <tr>
+
+                <!-- Level 1 - Direct children of Invoice -->
+                <tr data-level="1" data-parent="invoice" data-id="ublversionid">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>UBLVersionID</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>UBLVersionID
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">Identifies the earliest version of the UBL 2 schema for this document type that defines all of the elements that might be encountered in the current instance. Example: 2.0.5</td>
+                    <td class="description-cell">Identifies the earliest version of the UBL 2 schema for this document type. Example: 2.1</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="customizationid">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>CustomizationID</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>CustomizationID
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">Identifies a user-defined customization of UBL for a specific use. Example: NES</td>
+                    <td class="description-cell">Identifies a user-defined customization of UBL for a specific use.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="profileid">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>ProfileID</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>ProfileID
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">Identifies a user-defined profile of the customization of UBL being used. Example: BasicProcurementProcess</td>
+                    <td class="description-cell">Identifies a user-defined profile of the customization of UBL being used.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="profileexecutionid">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>ProfileExecutionID</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>ProfileExecutionID
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">Identifies an instance of executing a profile, to associate all transactions in a collaboration. Example: BPP-1001</td>
+                    <td class="description-cell">Identifies an instance of executing a profile, to associate all transactions in a collaboration.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="id">
                     <td class="card-cell"><span class="required">1..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>ID</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>ID
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">An identifier for this document, assigned by the sender. Also known as: Invoice Number</td>
+                    <td class="description-cell">An identifier for this document, assigned by the sender. Invoice Number.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="copyindicator">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>CopyIndicator</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>CopyIndicator
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">Indicates whether this document is a copy (true) or not (false).</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="uuid">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>UUID</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>UUID
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">A universally unique identifier for an instance of this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="issuedate">
                     <td class="card-cell"><span class="required">1..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>IssueDate</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>IssueDate
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">The date, assigned by the sender, on which this document was issued. Also known as: Invoice Date</td>
+                    <td class="description-cell">The date, assigned by the sender, on which this document was issued. Invoice Date.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="issuetime">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>IssueTime</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>IssueTime
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">The time, assigned by the sender, at which this document was issued.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="duedate">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>DueDate</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>DueDate
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">The date on which Invoice is due.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="invoicetypecode">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>InvoiceTypeCode</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>InvoiceTypeCode
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">A code signifying the type of the Invoice.</td>
+                    <td class="description-cell">A code signifying the type of the Invoice (380=Commercial invoice, 381=Credit note, etc.).</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="note">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>Note</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>Note
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">Free-form text pertinent to this document, conveying information that is not contained explicitly in other structures.</td>
+                    <td class="description-cell">Free-form text pertinent to this document, conveying information not contained explicitly in other structures.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="taxpointdate">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>TaxPointDate</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>TaxPointDate
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">The date of the Invoice, used to indicate the point at which tax becomes applicable.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="documentcurrencycode">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>DocumentCurrencyCode</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>DocumentCurrencyCode
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">A code signifying the default currency for this document.</td>
+                    <td class="description-cell">A code signifying the default currency for this document (ISO 4217, e.g., EUR, USD, GBP).</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="taxcurrencycode">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>TaxCurrencyCode</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>TaxCurrencyCode
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">A code signifying the currency used for tax amounts in the Invoice.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="pricingcurrencycode">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>PricingCurrencyCode</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>PricingCurrencyCode
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">A code signifying the currency used for prices in the Invoice.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="paymentcurrencycode">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>PaymentCurrencyCode</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>PaymentCurrencyCode
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">A code signifying the currency used for payment in the Invoice.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="paymentalternativecurrencycode">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>PaymentAlternativeCurrencyCode</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>PaymentAlternativeCurrencyCode
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">A code signifying the alternative currency used for payment in the Invoice.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="accountingcostcode">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>AccountingCostCode</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>AccountingCostCode
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">The buyer's accounting code, applied to the Invoice as a whole.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="accountingcost">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>AccountingCost</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>AccountingCost
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">The buyer's accounting code, applied to the Invoice as a whole, expressed as text.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="linecountnumeric">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>LineCountNumeric</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>LineCountNumeric
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
-                    <td class="description-cell">The number of lines in the document.</td>
+                    <td class="description-cell">The number of Invoice Lines in the document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="buyerreference">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cbc:</span>BuyerReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cbc:</span>BuyerReference
+                    </td>
                     <td><span class="element-type type-bbie">BBIE</span></td>
                     <td class="description-cell">A reference provided by the buyer used for internal routing of the document.</td>
                 </tr>
-                <tr>
+
+                <!-- Invoice Period -->
+                <tr data-level="1" data-parent="invoice" data-id="invoiceperiod">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>InvoicePeriod</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('invoiceperiod')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>InvoicePeriod
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A period to which the Invoice applies.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="invoiceperiod" data-id="invoiceperiod-startdate" class="hidden">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>OrderReference</td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>StartDate
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The date on which this period begins.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceperiod" data-id="invoiceperiod-enddate" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>EndDate
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The date on which this period ends.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceperiod" data-id="invoiceperiod-descriptioncode" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>DescriptionCode
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A description of this period, expressed as a code.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceperiod" data-id="invoiceperiod-description" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>Description
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A description of this period, expressed as text.</td>
+                </tr>
+
+                <!-- Order Reference -->
+                <tr data-level="1" data-parent="invoice" data-id="orderreference">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('orderreference')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>OrderReference
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A reference to the Order with which this Invoice is associated.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="orderreference" data-id="orderreference-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the referenced order assigned by the buyer.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="orderreference" data-id="orderreference-salesnumber" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>SalesOrderID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the referenced order assigned by the seller.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="orderreference" data-id="orderreference-copyindicator" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>CopyIndicator
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">Indicates whether the referenced Order is a copy (true) or the original (false).</td>
+                </tr>
+
+                <tr data-level="2" data-parent="orderreference" data-id="orderreference-uuid" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>UUID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A universally unique identifier for the Order.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="orderreference" data-id="orderreference-issuedate" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>IssueDate
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The date on which the referenced Order was issued.</td>
+                </tr>
+
+                <!-- Billing Reference -->
+                <tr data-level="1" data-parent="invoice" data-id="billingreference">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>BillingReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('billingreference')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>BillingReference
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A reference to a billing document associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="billingreference" data-id="billingreference-invoicedocref" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('billingreference-invoicedocref')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>InvoiceDocumentReference
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A reference to an invoice.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="billingreference-invoicedocref" data-id="billingreference-invoicedocref-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the referenced invoice.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="billingreference-invoicedocref" data-id="billingreference-invoicedocref-issuedate" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>IssueDate
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The date on which the invoice was issued.</td>
+                </tr>
+
+                <!-- Additional Document References -->
+                <tr data-level="1" data-parent="invoice" data-id="despatchdocref">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>DespatchDocumentReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>DespatchDocumentReference
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A reference to a Despatch Advice associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="receiptdocref">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>ReceiptDocumentReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>ReceiptDocumentReference
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A reference to a Receipt Advice associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="statementdocref">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>StatementDocumentReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>StatementDocumentReference
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A reference to a Statement associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="originatordocref">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>OriginatorDocumentReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>OriginatorDocumentReference
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A reference to an originator document associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="contractdocref">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>ContractDocumentReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>ContractDocumentReference
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A reference to a contract associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="additionaldocref">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>AdditionalDocumentReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('additionaldocref')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>AdditionalDocumentReference
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A reference to an additional document associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="additionaldocref" data-id="additionaldocref-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the referenced document.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="additionaldocref" data-id="additionaldocref-doctype" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>DocumentTypeCode
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The type of document being referenced, expressed as a code.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="additionaldocref" data-id="additionaldocref-doctype-text" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>DocumentType
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The type of document being referenced, expressed as text.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="additionaldocref" data-id="additionaldocref-attachment" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('additionaldocref-attachment')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>Attachment
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The attachment that contains the document.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="additionaldocref-attachment" data-id="additionaldocref-attachment-binary" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>EmbeddedDocumentBinaryObject
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A binary object containing an attached document (Base64 encoded).</td>
+                </tr>
+
+                <tr data-level="3" data-parent="additionaldocref-attachment" data-id="additionaldocref-attachment-external" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('additionaldocref-attachment-external')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>ExternalReference
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A reference to an attached document that is external to the document.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="additionaldocref-attachment-external" data-id="additionaldocref-attachment-external-uri" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>URI
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The Uniform Resource Identifier (URI) that identifies the external object.</td>
+                </tr>
+
+                <!-- Project Reference -->
+                <tr data-level="1" data-parent="invoice" data-id="projectreference">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>ProjectReference</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('projectreference')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>ProjectReference
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">Information about a project.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="projectreference" data-id="projectreference-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the referenced project.</td>
+                </tr>
+
+                <!-- Signature -->
+                <tr data-level="1" data-parent="invoice" data-id="signature">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>Signature</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>Signature
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A signature applied to this document.</td>
                 </tr>
-                <tr>
+
+                <!-- Accounting Supplier Party -->
+                <tr data-level="1" data-parent="invoice" data-id="accountingsupplierparty">
                     <td class="card-cell"><span class="required">1..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>AccountingSupplierParty</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('accountingsupplierparty')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>AccountingSupplierParty
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">The accounting supplier party.</td>
+                    <td class="description-cell">The accounting supplier party (seller).</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="accountingsupplierparty" data-id="accountingsupplierparty-party" class="hidden">
                     <td class="card-cell"><span class="required">1..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>AccountingCustomerParty</td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('accountingsupplierparty-party')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>Party
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">The accounting customer party.</td>
+                    <td class="description-cell">The supplier party.</td>
                 </tr>
-                <tr>
+
+                <!-- Party structure (shared for all parties) -->
+                <tr data-level="3" data-parent="accountingsupplierparty-party" data-id="party-endpointid" class="hidden">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>PayeeParty</td>
-                    <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">The payee.</td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>EndpointID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the party's electronic endpoint (e.g., GLN, email).</td>
                 </tr>
-                <tr>
-                    <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>BuyerCustomerParty</td>
-                    <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">The buyer.</td>
-                </tr>
-                <tr>
-                    <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>SellerSupplierParty</td>
-                    <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">The seller.</td>
-                </tr>
-                <tr>
-                    <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>TaxRepresentativeParty</td>
-                    <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">The tax representative.</td>
-                </tr>
-                <tr>
+
+                <tr data-level="3" data-parent="accountingsupplierparty-party" data-id="party-partyidentification" class="hidden">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>Delivery</td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('party-partyidentification')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>PartyIdentification
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">An identifier for this party.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-partyidentification" data-id="party-partyidentification-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the party (e.g., VAT number, company registration number).</td>
+                </tr>
+
+                <tr data-level="3" data-parent="accountingsupplierparty-party" data-id="party-partyname" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('party-partyname')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>PartyName
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A name for this party.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-partyname" data-id="party-partyname-name" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>Name
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The name of this party.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="accountingsupplierparty-party" data-id="party-postaladdress" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('party-postaladdress')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>PostalAddress
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The party's postal address.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-postaladdress" data-id="party-postaladdress-streetname" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>StreetName
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The name of the street.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-postaladdress" data-id="party-postaladdress-additionalstreetname" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>AdditionalStreetName
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An additional name of a street or thoroughfare.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-postaladdress" data-id="party-postaladdress-cityname" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>CityName
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The name of the city.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-postaladdress" data-id="party-postaladdress-postalzone" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>PostalZone
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The postal identifier (e.g., zip code, postal code).</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-postaladdress" data-id="party-postaladdress-countrysubentity" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>CountrySubentity
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A territorial division of a country (e.g., region, state, province).</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-postaladdress" data-id="party-postaladdress-addressline" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="toggle-btn" onclick="toggleChildren('party-postaladdress-addressline')">▶</span>
+                        <span class="bullet">∙</span> <span class="namespace">cac:</span>AddressLine
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">An unstructured address line.</td>
+                </tr>
+
+                <tr data-level="5" data-parent="party-postaladdress-addressline" data-id="party-postaladdress-addressline-line" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-5">
+                        <span class="no-children"></span>
+                        <span class="bullet">·</span> <span class="namespace">cbc:</span>Line
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An unstructured address line.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-postaladdress" data-id="party-postaladdress-country" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="toggle-btn" onclick="toggleChildren('party-postaladdress-country')">▶</span>
+                        <span class="bullet">∙</span> <span class="namespace">cac:</span>Country
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The country in which the address is located.</td>
+                </tr>
+
+                <tr data-level="5" data-parent="party-postaladdress-country" data-id="party-postaladdress-country-code" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-5">
+                        <span class="no-children"></span>
+                        <span class="bullet">·</span> <span class="namespace">cbc:</span>IdentificationCode
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A code signifying this country (ISO 3166-1 alpha-2, e.g., US, GB, DE).</td>
+                </tr>
+
+                <tr data-level="5" data-parent="party-postaladdress-country" data-id="party-postaladdress-country-name" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-5">
+                        <span class="no-children"></span>
+                        <span class="bullet">·</span> <span class="namespace">cbc:</span>Name
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The name of this country.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="accountingsupplierparty-party" data-id="party-partytaxscheme" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('party-partytaxscheme')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>PartyTaxScheme
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A tax scheme applying to this party.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-partytaxscheme" data-id="party-partytaxscheme-companyid" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>CompanyID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for this party assigned by the taxation authority (e.g., VAT number).</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-partytaxscheme" data-id="party-partytaxscheme-taxscheme" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="toggle-btn" onclick="toggleChildren('party-partytaxscheme-taxscheme')">▶</span>
+                        <span class="bullet">∙</span> <span class="namespace">cac:</span>TaxScheme
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The taxation scheme applicable to this party.</td>
+                </tr>
+
+                <tr data-level="5" data-parent="party-partytaxscheme-taxscheme" data-id="party-partytaxscheme-taxscheme-id" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-5">
+                        <span class="no-children"></span>
+                        <span class="bullet">·</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the taxation scheme (e.g., VAT, GST).</td>
+                </tr>
+
+                <tr data-level="3" data-parent="accountingsupplierparty-party" data-id="party-partylegalentity" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('party-partylegalentity')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>PartyLegalEntity
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">Information about the party as a legal entity.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-partylegalentity" data-id="party-partylegalentity-regname" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>RegistrationName
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The name of the party as registered with the relevant legal authority.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-partylegalentity" data-id="party-partylegalentity-companyid" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>CompanyID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the party as registered within a company registration scheme.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-partylegalentity" data-id="party-partylegalentity-regaddress" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cac:</span>RegistrationAddress
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The registered address of the legal entity.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="accountingsupplierparty-party" data-id="party-contact" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('party-contact')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>Contact
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The contact information for this party.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-contact" data-id="party-contact-name" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>Name
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The name of the contact person.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-contact" data-id="party-contact-telephone" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>Telephone
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A telephone number for this contact.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="party-contact" data-id="party-contact-email" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>ElectronicMail
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An email address for this contact.</td>
+                </tr>
+
+                <!-- Accounting Customer Party -->
+                <tr data-level="1" data-parent="invoice" data-id="accountingcustomerparty">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('accountingcustomerparty')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>AccountingCustomerParty
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The accounting customer party (buyer). Has same Party structure as AccountingSupplierParty.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="accountingcustomerparty" data-id="accountingcustomerparty-party" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>Party
+                        <span class="collapsed-indicator">(see Party structure above)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The customer party. Same structure as Party under AccountingSupplierParty.</td>
+                </tr>
+
+                <!-- Payee Party -->
+                <tr data-level="1" data-parent="invoice" data-id="payeeparty">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>PayeeParty
+                        <span class="collapsed-indicator">(Party structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The payee. Same structure as Party.</td>
+                </tr>
+
+                <!-- Buyer Customer Party -->
+                <tr data-level="1" data-parent="invoice" data-id="buyercustomerparty">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>BuyerCustomerParty
+                        <span class="collapsed-indicator">(Party structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The buyer. Same structure as AccountingSupplierParty.</td>
+                </tr>
+
+                <!-- Seller Supplier Party -->
+                <tr data-level="1" data-parent="invoice" data-id="sellersupplierparty">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>SellerSupplierParty
+                        <span class="collapsed-indicator">(Party structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The seller. Same structure as AccountingSupplierParty.</td>
+                </tr>
+
+                <!-- Tax Representative Party -->
+                <tr data-level="1" data-parent="invoice" data-id="taxrepresentativeparty">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>TaxRepresentativeParty
+                        <span class="collapsed-indicator">(Party structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The tax representative. Same structure as Party.</td>
+                </tr>
+
+                <!-- Delivery -->
+                <tr data-level="1" data-parent="invoice" data-id="delivery">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('delivery')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>Delivery
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A delivery associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="delivery" data-id="delivery-actualdeliverydate" class="hidden">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>DeliveryTerms</td>
-                    <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">A set of delivery terms associated with this document.</td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>ActualDeliveryDate
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The actual date of delivery.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="delivery" data-id="delivery-deliverylocation" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('delivery-deliverylocation')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>DeliveryLocation
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The delivery location.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="delivery-deliverylocation" data-id="delivery-deliverylocation-id" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the delivery location.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="delivery-deliverylocation" data-id="delivery-deliverylocation-address" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>Address
+                        <span class="collapsed-indicator">(Address structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The address of the delivery location.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="delivery" data-id="delivery-deliveryparty" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>DeliveryParty
+                        <span class="collapsed-indicator">(Party structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The party to whom the goods/services were delivered.</td>
+                </tr>
+
+                <!-- Delivery Terms -->
+                <tr data-level="1" data-parent="invoice" data-id="deliveryterms">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>DeliveryTerms
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A set of delivery terms associated with this document (e.g., Incoterms).</td>
+                </tr>
+
+                <!-- Payment Means -->
+                <tr data-level="1" data-parent="invoice" data-id="paymentmeans">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>PaymentMeans</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('paymentmeans')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>PaymentMeans
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">Expected means of payment.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="paymentmeans" data-id="paymentmeans-code" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>PaymentMeansCode
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A code signifying the means of payment (e.g., 30=Credit transfer, 31=Debit transfer, 48=Bank card).</td>
+                </tr>
+
+                <tr data-level="2" data-parent="paymentmeans" data-id="paymentmeans-duedate" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>PaymentDueDate
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The date on which payment is due for this payment means.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="paymentmeans" data-id="paymentmeans-id" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>PaymentID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the payment (e.g., remittance advice number).</td>
+                </tr>
+
+                <tr data-level="2" data-parent="paymentmeans" data-id="paymentmeans-cardaccount" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('paymentmeans-cardaccount')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>CardAccount
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A credit card, debit card, or charge card account used for payment.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="paymentmeans-cardaccount" data-id="paymentmeans-cardaccount-number" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>PrimaryAccountNumberID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier of the card account (masked for security).</td>
+                </tr>
+
+                <tr data-level="3" data-parent="paymentmeans-cardaccount" data-id="paymentmeans-cardaccount-networkid" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>NetworkID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The card network (e.g., VISA, Mastercard, AmEx).</td>
+                </tr>
+
+                <tr data-level="2" data-parent="paymentmeans" data-id="paymentmeans-payeefinancialaccount" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('paymentmeans-payeefinancialaccount')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>PayeeFinancialAccount
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The financial account to which payment should be made.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="paymentmeans-payeefinancialaccount" data-id="paymentmeans-payeefinancialaccount-id" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The account number (e.g., IBAN, account number).</td>
+                </tr>
+
+                <tr data-level="3" data-parent="paymentmeans-payeefinancialaccount" data-id="paymentmeans-payeefinancialaccount-name" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>Name
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The name of the account holder.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="paymentmeans-payeefinancialaccount" data-id="paymentmeans-payeefinancialaccount-financialinstitution" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('paymentmeans-payeefinancialaccount-financialinstitution')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>FinancialInstitutionBranch
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The financial institution servicing the account.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="paymentmeans-payeefinancialaccount-financialinstitution" data-id="paymentmeans-payeefinancialaccount-financialinstitution-id" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the financial institution (e.g., BIC/SWIFT code).</td>
+                </tr>
+
+                <!-- Payment Terms -->
+                <tr data-level="1" data-parent="invoice" data-id="paymentterms">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>PaymentTerms</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('paymentterms')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>PaymentTerms
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A set of payment terms associated with this document.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="paymentterms" data-id="paymentterms-note" class="hidden">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>PrepaidPayment</td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>Note
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">Free-form text applying to the payment terms.</td>
+                </tr>
+
+                <!-- Prepaid Payment -->
+                <tr data-level="1" data-parent="invoice" data-id="prepaidpayment">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>PrepaidPayment
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A prepaid payment.</td>
                 </tr>
-                <tr>
+
+                <!-- Allowance Charge -->
+                <tr data-level="1" data-parent="invoice" data-id="allowancecharge">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>AllowanceCharge</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('allowancecharge')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>AllowanceCharge
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">A discount or charge that applies to a price component.</td>
+                    <td class="description-cell">A discount or charge that applies to a price component (document level).</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="allowancecharge" data-id="allowancecharge-chargeindicator" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>ChargeIndicator
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">Indicates whether this is a charge (true) or an allowance/discount (false).</td>
+                </tr>
+
+                <tr data-level="2" data-parent="allowancecharge" data-id="allowancecharge-reason" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>AllowanceChargeReason
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The reason for this allowance or charge.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="allowancecharge" data-id="allowancecharge-amount" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>Amount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The amount of this allowance or charge.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="allowancecharge" data-id="allowancecharge-baseamount" class="hidden">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>TaxExchangeRate</td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>BaseAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The base amount on which the allowance/charge is calculated.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="allowancecharge" data-id="allowancecharge-multiplier" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>MultiplierFactorNumeric
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The factor applied to the base amount to calculate the allowance/charge (percentage/100).</td>
+                </tr>
+
+                <tr data-level="2" data-parent="allowancecharge" data-id="allowancecharge-taxcategory" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>TaxCategory
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The tax category applicable to this allowance or charge.</td>
+                </tr>
+
+                <!-- Exchange Rates -->
+                <tr data-level="1" data-parent="invoice" data-id="taxexchangerate">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>TaxExchangeRate
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">The exchange rate between the document currency and the tax currency.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="pricingexchangerate">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>PricingExchangeRate</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>PricingExchangeRate
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">The exchange rate between the document currency and the pricing currency.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="paymentexchangerate">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>PaymentExchangeRate</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>PaymentExchangeRate
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">The exchange rate between the document currency and the payment currency.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="1" data-parent="invoice" data-id="paymentalternativeexchangerate">
                     <td class="card-cell"><span class="optional">0..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>PaymentAlternativeExchangeRate</td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>PaymentAlternativeExchangeRate
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">The exchange rate between the document currency and the payment alternative currency.</td>
                 </tr>
-                <tr>
+
+                <!-- Tax Total -->
+                <tr data-level="1" data-parent="invoice" data-id="taxtotal">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>TaxTotal</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('taxtotal')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>TaxTotal
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">The total amount of a specific type of tax.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="taxtotal" data-id="taxtotal-amount" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>TaxAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The total tax amount for a particular taxation scheme (e.g., VAT).</td>
+                </tr>
+
+                <tr data-level="2" data-parent="taxtotal" data-id="taxtotal-roundingamount" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>RoundingAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The rounding amount for this total tax amount.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="taxtotal" data-id="taxtotal-subtotal" class="hidden">
                     <td class="card-cell"><span class="optional">0..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>WithholdingTaxTotal</td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('taxtotal-subtotal')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>TaxSubtotal
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A subtotal for a particular tax category within the taxation scheme.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="taxtotal-subtotal" data-id="taxtotal-subtotal-taxableamount" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>TaxableAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The net amount to which the tax percent (rate) is applied.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="taxtotal-subtotal" data-id="taxtotal-subtotal-taxamount" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>TaxAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The amount of this tax subtotal.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="taxtotal-subtotal" data-id="taxtotal-subtotal-percent" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>Percent
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The tax rate of the tax category applied, expressed as a percentage.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="taxtotal-subtotal" data-id="taxtotal-subtotal-taxcategory" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('taxtotal-subtotal-taxcategory')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>TaxCategory
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The tax category applicable to this subtotal.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="taxtotal-subtotal-taxcategory" data-id="taxtotal-subtotal-taxcategory-id" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the tax category (e.g., S=Standard rate, Z=Zero rated, E=Exempt).</td>
+                </tr>
+
+                <tr data-level="4" data-parent="taxtotal-subtotal-taxcategory" data-id="taxtotal-subtotal-taxcategory-percent" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>Percent
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The tax rate for this category.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="taxtotal-subtotal-taxcategory" data-id="taxtotal-subtotal-taxcategory-exemptionreason" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>TaxExemptionReason
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The reason for a tax exemption, expressed as text.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="taxtotal-subtotal-taxcategory" data-id="taxtotal-subtotal-taxcategory-taxscheme" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="toggle-btn" onclick="toggleChildren('taxtotal-subtotal-taxcategory-taxscheme')">▶</span>
+                        <span class="bullet">∙</span> <span class="namespace">cac:</span>TaxScheme
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The taxation scheme applicable to this category.</td>
+                </tr>
+
+                <tr data-level="5" data-parent="taxtotal-subtotal-taxcategory-taxscheme" data-id="taxtotal-subtotal-taxcategory-taxscheme-id" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-5">
+                        <span class="no-children"></span>
+                        <span class="bullet">·</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the taxation scheme (e.g., VAT, GST, sales tax).</td>
+                </tr>
+
+                <!-- Withholding Tax Total -->
+                <tr data-level="1" data-parent="invoice" data-id="withholdingtaxtotal">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-1">
+                        <span class="no-children"></span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>WithholdingTaxTotal
+                        <span class="collapsed-indicator">(same structure as TaxTotal)</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">The total withholding tax.</td>
                 </tr>
-                <tr>
+
+                <!-- Legal Monetary Total -->
+                <tr data-level="1" data-parent="invoice" data-id="legalmonetarytotal">
                     <td class="card-cell"><span class="required">1..1</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>LegalMonetaryTotal</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('legalmonetarytotal')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>LegalMonetaryTotal
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
-                    <td class="description-cell">The total amount payable on the Invoice, including Allowances, Charges, and Taxes.</td>
+                    <td class="description-cell">The total amount payable on the Invoice, including allowances, charges, and taxes.</td>
                 </tr>
-                <tr>
+
+                <tr data-level="2" data-parent="legalmonetarytotal" data-id="legalmonetarytotal-lineextension" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>LineExtensionAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The sum of all invoice line amounts (excluding VAT and allowances/charges).</td>
+                </tr>
+
+                <tr data-level="2" data-parent="legalmonetarytotal" data-id="legalmonetarytotal-taxexclusive" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>TaxExclusiveAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The total amount excluding taxes.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="legalmonetarytotal" data-id="legalmonetarytotal-taxinclusive" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>TaxInclusiveAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The total amount including taxes.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="legalmonetarytotal" data-id="legalmonetarytotal-allowancetotal" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>AllowanceTotalAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The total monetary amount of all allowances.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="legalmonetarytotal" data-id="legalmonetarytotal-chargetotal" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>ChargeTotalAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The total monetary amount of all charges.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="legalmonetarytotal" data-id="legalmonetarytotal-prepaidamount" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>PrepaidAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The total prepaid amount.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="legalmonetarytotal" data-id="legalmonetarytotal-payablerounding" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>PayableRoundingAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The rounding amount for the payable amount.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="legalmonetarytotal" data-id="legalmonetarytotal-payableamount" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>PayableAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The amount to be paid (including taxes, after allowances, charges, and prepaid amounts).</td>
+                </tr>
+
+                <!-- Invoice Line -->
+                <tr data-level="1" data-parent="invoice" data-id="invoiceline">
                     <td class="card-cell"><span class="required">1..n</span></td>
-                    <td class="name-cell indent-1"><span class="bullet">•</span> <span class="namespace">cac:</span>InvoiceLine</td>
+                    <td class="name-cell indent-1">
+                        <span class="toggle-btn" onclick="toggleChildren('invoiceline')">▶</span>
+                        <span class="bullet">•</span> <span class="namespace">cac:</span>InvoiceLine
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
                     <td><span class="element-type type-asbie">ASBIE</span></td>
                     <td class="description-cell">A line describing an invoice item.</td>
                 </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for this invoice line.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-note" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>Note
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">Free-form text pertinent to this invoice line.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-invoicedquantity" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>InvoicedQuantity
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The quantity of items (goods or services) invoiced.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-lineextensionamount" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>LineExtensionAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The total amount for this invoice line, excluding VAT.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-accountingcost" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cbc:</span>AccountingCost
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The buyer's accounting cost centre for this invoice line.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-invoiceperiod" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>InvoicePeriod
+                        <span class="collapsed-indicator">(Period structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The period to which the invoice line applies.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-orderlinereference" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('invoiceline-orderlinereference')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>OrderLineReference
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A reference to an order line associated with this invoice line.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-orderlinereference" data-id="invoiceline-orderlinereference-lineid" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>LineID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the referenced order line, assigned by the buyer.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-documentreference" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>DocumentReference
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A reference to a document associated with this invoice line.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-allowancecharge" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>AllowanceCharge
+                        <span class="collapsed-indicator">(AllowanceCharge structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A discount or charge that applies to this invoice line.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-taxtotal" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="no-children"></span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>TaxTotal
+                        <span class="collapsed-indicator">(TaxTotal structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The total tax amount for this invoice line.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-item" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('invoiceline-item')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>Item
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A description of the item.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-item" data-id="invoiceline-item-description" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>Description
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A description of the item.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-item" data-id="invoiceline-item-name" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>Name
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">A short name for this item.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-item" data-id="invoiceline-item-buyersitemid" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('invoiceline-item-buyersitemid')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>BuyersItemIdentification
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">Identifying information for this item, assigned by the buyer.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="invoiceline-item-buyersitemid" data-id="invoiceline-item-buyersitemid-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the item assigned by the buyer.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-item" data-id="invoiceline-item-sellersitemid" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('invoiceline-item-sellersitemid')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>SellersItemIdentification
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">Identifying information for this item, assigned by the seller.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="invoiceline-item-sellersitemid" data-id="invoiceline-item-sellersitemid-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the item assigned by the seller.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-item" data-id="invoiceline-item-standarditemid" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="toggle-btn" onclick="toggleChildren('invoiceline-item-standarditemid')">▶</span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>StandardItemIdentification
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">Identifying information for this item, assigned according to a standard system.</td>
+                </tr>
+
+                <tr data-level="4" data-parent="invoiceline-item-standarditemid" data-id="invoiceline-item-standarditemid-id" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-4">
+                        <span class="no-children"></span>
+                        <span class="bullet">∙</span> <span class="namespace">cbc:</span>ID
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">An identifier for the item (e.g., GTIN, EAN).</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-item" data-id="invoiceline-item-classifiedtaxcategory" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>ClassifiedTaxCategory
+                        <span class="collapsed-indicator">(TaxCategory structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A tax category applicable to this item.</td>
+                </tr>
+
+                <tr data-level="2" data-parent="invoiceline" data-id="invoiceline-price" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-2">
+                        <span class="toggle-btn" onclick="toggleChildren('invoiceline-price')">▶</span>
+                        <span class="bullet">◦</span> <span class="namespace">cac:</span>Price
+                        <span class="collapsed-indicator">[...]</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">The price of the item.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-price" data-id="invoiceline-price-priceamount" class="hidden">
+                    <td class="card-cell"><span class="required">1..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>PriceAmount
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The amount of the price.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-price" data-id="invoiceline-price-basequantity" class="hidden">
+                    <td class="card-cell"><span class="optional">0..1</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cbc:</span>BaseQuantity
+                    </td>
+                    <td><span class="element-type type-bbie">BBIE</span></td>
+                    <td class="description-cell">The quantity at which this price applies.</td>
+                </tr>
+
+                <tr data-level="3" data-parent="invoiceline-price" data-id="invoiceline-price-allowancecharge" class="hidden">
+                    <td class="card-cell"><span class="optional">0..n</span></td>
+                    <td class="name-cell indent-3">
+                        <span class="no-children"></span>
+                        <span class="bullet">▪</span> <span class="namespace">cac:</span>AllowanceCharge
+                        <span class="collapsed-indicator">(AllowanceCharge structure)</span>
+                    </td>
+                    <td><span class="element-type type-asbie">ASBIE</span></td>
+                    <td class="description-cell">A discount or charge applied to the price.</td>
+                </tr>
+
             </tbody>
         </table>
 
@@ -578,8 +2103,15 @@
             </ul>
             <h2 style="margin-top: 20px;">Namespace Prefixes</h2>
             <ul style="margin-left: 20px; margin-top: 10px;">
-                <li><strong>cbc:</strong> - Common Basic Components (simple data types)</li>
-                <li><strong>cac:</strong> - Common Aggregate Components (complex data types)</li>
+                <li><strong>cbc:</strong> - Common Basic Components (simple data types like strings, dates, amounts)</li>
+                <li><strong>cac:</strong> - Common Aggregate Components (complex nested structures)</li>
+            </ul>
+            <h2 style="margin-top: 20px;">How to Use</h2>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Click the <strong>▶</strong> or <strong>▼</strong> arrows to expand/collapse nested elements</li>
+                <li>Use the search box to filter elements by name</li>
+                <li>Use "Expand All" to see the complete structure</li>
+                <li>Elements marked <span class="collapsed-indicator">[...]</span> or <span class="collapsed-indicator">(structure)</span> contain child elements</li>
             </ul>
         </div>
 
@@ -591,6 +2123,103 @@
     </div>
 
     <script>
+        // Toggle children visibility
+        function toggleChildren(parentId) {
+            const children = document.querySelectorAll(`[data-parent="${parentId}"]`);
+            const toggleBtn = event.target;
+            const isExpanding = toggleBtn.textContent === '▶';
+
+            children.forEach(child => {
+                child.classList.toggle('hidden');
+
+                // If collapsing, also collapse all descendants
+                if (!isExpanding) {
+                    const childId = child.getAttribute('data-id');
+                    if (childId) {
+                        collapseDescendants(childId);
+                    }
+                }
+            });
+
+            toggleBtn.textContent = isExpanding ? '▼' : '▶';
+
+            // Toggle collapsed indicator
+            const row = toggleBtn.closest('tr');
+            const indicator = row.querySelector('.collapsed-indicator');
+            if (indicator) {
+                indicator.style.display = isExpanding ? 'none' : 'inline';
+            }
+        }
+
+        // Recursively collapse all descendants
+        function collapseDescendants(parentId) {
+            const children = document.querySelectorAll(`[data-parent="${parentId}"]`);
+            children.forEach(child => {
+                child.classList.add('hidden');
+                const childId = child.getAttribute('data-id');
+                if (childId) {
+                    // Reset toggle button
+                    const toggleBtn = child.querySelector('.toggle-btn');
+                    if (toggleBtn) {
+                        toggleBtn.textContent = '▶';
+                    }
+                    // Show collapsed indicator
+                    const indicator = child.querySelector('.collapsed-indicator');
+                    if (indicator) {
+                        indicator.style.display = 'inline';
+                    }
+                    collapseDescendants(childId);
+                }
+            });
+        }
+
+        // Expand all rows
+        function expandAll() {
+            document.querySelectorAll('tbody tr.hidden').forEach(row => {
+                row.classList.remove('hidden');
+            });
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.textContent = '▼';
+            });
+            document.querySelectorAll('.collapsed-indicator').forEach(indicator => {
+                indicator.style.display = 'none';
+            });
+        }
+
+        // Collapse all rows except level 0
+        function collapseAll() {
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const level = parseInt(row.getAttribute('data-level'));
+                if (level > 1) {
+                    row.classList.add('hidden');
+                }
+            });
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.textContent = '▶';
+            });
+            document.querySelectorAll('.collapsed-indicator').forEach(indicator => {
+                indicator.style.display = 'inline';
+            });
+        }
+
+        // Expand to specific level
+        function expandLevel(maxLevel) {
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const level = parseInt(row.getAttribute('data-level'));
+                if (level <= maxLevel) {
+                    row.classList.remove('hidden');
+                    const toggleBtn = row.querySelector('.toggle-btn');
+                    if (toggleBtn && level < maxLevel) {
+                        toggleBtn.textContent = '▼';
+                        const indicator = row.querySelector('.collapsed-indicator');
+                        if (indicator) indicator.style.display = 'none';
+                    }
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+
         // Search functionality
         const searchBox = document.getElementById('searchBox');
         const tableRows = document.querySelectorAll('#structureTable tbody tr');
@@ -598,15 +2227,33 @@
         searchBox.addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
 
+            if (searchTerm.length === 0) {
+                // Reset to collapsed view
+                tableRows.forEach(row => {
+                    row.style.display = '';
+                    row.classList.remove('highlight');
+                });
+                collapseAll();
+                return;
+            }
+
             tableRows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 if (text.includes(searchTerm)) {
                     row.style.display = '';
-                    // Highlight matching text
-                    if (searchTerm.length > 0) {
-                        row.classList.add('highlight');
-                    } else {
-                        row.classList.remove('highlight');
+                    row.classList.add('highlight');
+
+                    // Show all parents
+                    let parent = row.getAttribute('data-parent');
+                    while (parent) {
+                        const parentRow = document.querySelector(`[data-id="${parent}"]`);
+                        if (parentRow) {
+                            parentRow.style.display = '';
+                            parentRow.classList.remove('hidden');
+                            parent = parentRow.getAttribute('data-parent');
+                        } else {
+                            break;
+                        }
                     }
                 } else {
                     row.style.display = 'none';
@@ -615,8 +2262,8 @@
             });
         });
 
-        // Collapsible sections (future enhancement)
-        // Click on ASBIE elements to expand/collapse child elements
+        // Initialize with level 1 expanded
+        expandLevel(1);
     </script>
 </body>
 </html>
