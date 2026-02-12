@@ -12,21 +12,21 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: #f5f7fa;
+            color: #24292e;
+            background: #f6f8fa;
         }
 
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
             color: white;
             padding: 2rem 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -37,141 +37,175 @@
         }
 
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 0.9;
         }
 
-        .search-box {
+        nav {
             background: white;
-            padding: 2rem;
-            margin: -30px auto 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 800px;
+            border-bottom: 1px solid #e1e4e8;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .search-input {
-            width: 100%;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #e0e0e0;
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+        }
+
+        .nav-link {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #586069;
             border-radius: 6px;
-            transition: border-color 0.3s;
+            white-space: nowrap;
+            transition: all 0.2s;
+            font-weight: 500;
         }
 
-        .search-input:focus {
-            outline: none;
-            border-color: #667eea;
+        .nav-link:hover, .nav-link.active {
+            background: #f1f8ff;
+            color: #0366d6;
         }
 
         .content {
             padding: 2rem 0;
         }
 
-        .intro {
+        .doc-section {
             background: white;
+            border-radius: 6px;
             padding: 2rem;
-            border-radius: 8px;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .intro h2 {
-            color: #667eea;
+        .doc-section h2 {
+            color: #2c5282;
             margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e1e4e8;
         }
 
-        .documents-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+        .tree {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-top: 1rem;
         }
 
-        .document-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-left: 4px solid #667eea;
+        .tree-item {
+            display: flex;
+            padding: 0.3rem 0;
+            border-radius: 3px;
+            transition: background 0.15s;
         }
 
-        .document-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .tree-item:hover {
+            background: #f6f8fa;
         }
 
-        .document-card h3 {
-            color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+        .tree-indent {
+            color: #d1d5da;
+            white-space: pre;
         }
 
-        .document-card .doc-name {
-            color: #667eea;
+        .tree-cardinality {
+            color: #6f42c1;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-family: monospace;
-            font-size: 0.9rem;
+            min-width: 60px;
+            display: inline-block;
         }
 
-        .document-card .doc-size {
-            color: #999;
-            font-size: 0.85rem;
+        .tree-element {
+            color: #005cc5;
+            font-weight: 500;
         }
 
-        .category-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .tree-attribute {
+            color: #d73a49;
+        }
+
+        .tree-type {
+            color: #6a737d;
+            font-style: italic;
+            margin-left: 0.5rem;
+        }
+
+        .tree-description {
+            color: #24292e;
+            margin-left: 1rem;
+            flex: 1;
+        }
+
+        .tree-required {
+            background: #d73a49;
             color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0 1rem;
-            font-size: 1.3rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 11px;
             font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .tree-optional {
+            background: #28a745;
+            color: white;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .codelist-link {
+            color: #0366d6;
+            text-decoration: none;
+            margin-left: 0.5rem;
+            font-size: 12px;
+        }
+
+        .codelist-link:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: #f1f8ff;
+            border-left: 4px solid #0366d6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 3px;
+        }
+
+        .info-box strong {
+            color: #0366d6;
         }
 
         footer {
-            background: #2d3748;
+            background: #24292e;
             color: white;
             text-align: center;
             padding: 2rem;
             margin-top: 4rem;
         }
 
-        .stats {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 6px;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        a {
-            color: #667eea;
+        footer a {
+            color: #58a6ff;
             text-decoration: none;
         }
 
-        a:hover {
+        footer a:hover {
             text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -179,288 +213,2322 @@
     <header>
         <div class="container">
             <h1>UBL 2.1 Documentation</h1>
-            <p class="subtitle">Universal Business Language 2.1 - Schema Documentation</p>
+            <p class="subtitle">Universal Business Language 2.1 - Complete Schema Structure</p>
         </div>
     </header>
 
-    <div class="container">
-        <div class="search-box">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search for document types... (e.g., Invoice, Order, Catalogue)">
+    <nav>
+        <div class="nav-container">
+            <a href="#invoice" class="nav-link active" onclick="showDoc('invoice')">Invoice</a>
+            <a href="#creditnote" class="nav-link" onclick="showDoc('creditnote')">Credit Note</a>
+            <a href="#debitnote" class="nav-link" onclick="showDoc('debitnote')">Debit Note</a>
+            <a href="#order" class="nav-link" onclick="showDoc('order')">Order</a>
         </div>
+    </nav>
 
+    <div class="container">
         <div class="content">
-            <div class="intro">
-                <h2>About UBL 2.1</h2>
-                <p>Universal Business Language (UBL) is a library of standard electronic XML business documents such as purchase orders and invoices. UBL 2.1 is maintained by OASIS and provides a royalty-free standard for business document exchange.</p>
 
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-number">66</div>
-                        <div class="stat-label">Document Types</div>
+            <!-- INVOICE -->
+            <div id="invoice-section" class="doc-section">
+                <h2>📄 UBL Invoice 2.1</h2>
+
+                <div class="info-box">
+                    <strong>Invoice</strong> - A document used to request payment for goods or services supplied.
+                </div>
+
+                <div class="tree">
+                    <div class="tree-item">
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">Invoice</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Root element</span>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">2.1</div>
-                        <div class="stat-label">Version</div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:UBLVersionID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Identifies earliest version of UBL 2 schema (e.g., "2.1")</span>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">2013</div>
-                        <div class="stat-label">Released</div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CustomizationID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Identifies user-defined customization of UBL</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:ProfileID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Identifies user-defined profile</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:ProfileExecutionID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Identifies instance of executing profile</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Invoice identifier/number assigned by sender</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CopyIndicator</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Indicates whether document is a copy (true/false)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:UUID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Universally unique identifier for document instance</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:IssueDate</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Date when invoice was issued (YYYY-MM-DD)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:IssueTime</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Time when invoice was issued</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:DueDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Date when invoice payment is due</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:InvoiceTypeCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Code signifying type of invoice</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL1001/" class="codelist-link" target="_blank">↗ UNCL1001</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cbc:Note</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Free-form text pertinent to document</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxPointDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Date indicating when tax becomes applicable</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:DocumentCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Default currency for document</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Currency used for tax amounts</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PricingCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Currency used for prices</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PaymentCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Currency used for payment</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PaymentAlternativeCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Alternative currency for payment</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AccountingCostCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's accounting code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AccountingCost</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's accounting code (text)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:LineCountNumeric</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Number of lines in document</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:BuyerReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's internal reference for routing</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:InvoicePeriod</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Period to which invoice applies</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:StartDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Start date of period</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:EndDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">End date of period</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:OrderReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to associated order</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Order number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:SalesOrderID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Sales order identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:BillingReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to related billing document</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:DespatchDocumentReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to despatch advice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:ReceiptDocumentReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to receipt advice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:ContractDocumentReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to contract</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:AdditionalDocumentReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to additional document</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:AccountingSupplierParty</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Accounting supplier party (seller)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Party</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Party information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:EndpointID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Electronic address</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-attribute">@schemeID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Electronic address scheme</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/eas/" class="codelist-link" target="_blank">↗ EAS</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:PartyIdentification</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Party identification</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Identification number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PartyName</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Party name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:Name</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PostalAddress</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Postal address</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:StreetName</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Street name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AdditionalStreetName</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Additional street name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CityName</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">City name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PostalZone</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Postal code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CountrySubentity</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Country subdivision (state/province)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:Country</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Country</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">          </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:IdentificationCode</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Country code</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO3166/" class="codelist-link" target="_blank">↗ ISO3166</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PartyTaxScheme</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax scheme information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:CompanyID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">VAT identification number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:TaxScheme</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax scheme</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">          </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax scheme identifier (e.g., "VAT")</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PartyLegalEntity</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Legal entity information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:RegistrationName</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Legal registration name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CompanyID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Company registration number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:Contact</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Contact information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Name</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Contact person name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Telephone</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Phone number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:ElectronicMail</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Email address</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:AccountingCustomerParty</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Accounting customer party (buyer) - similar structure to supplier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PayeeParty</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payee (if different from supplier)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:Delivery</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Delivery information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:ActualDeliveryDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Actual delivery date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:DeliveryLocation</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Delivery location</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:PaymentMeans</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payment means information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:PaymentMeansCode</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Payment means type code</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL4461/" class="codelist-link" target="_blank">↗ UNCL4461</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PaymentID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payment reference/remittance information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PayeeFinancialAccount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payee's bank account</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Account number (IBAN)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Name</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Account name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:FinancialInstitutionBranch</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Bank information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">BIC/SWIFT code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:PaymentTerms</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payment terms</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Note</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payment terms description</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:AllowanceCharge</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Document level allowances/charges</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ChargeIndicator</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Charge indicator (true=charge, false=allowance)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AllowanceChargeReasonCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reason code</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL5189/" class="codelist-link" target="_blank">↗ UNCL5189</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AllowanceChargeReason</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reason description</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:Amount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-attribute">@currencyID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:TaxCategory</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax category</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax category code</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL5305/" class="codelist-link" target="_blank">↗ UNCL5305</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Percent</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax rate percentage</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:TaxScheme</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax scheme</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax scheme identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:TaxTotal</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax total information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:TaxAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Total tax amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-attribute">@currencyID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:TaxSubtotal</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax breakdown by category</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:TaxableAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Taxable amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:TaxAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax amount for this category</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:TaxCategory</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax category details</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:LegalMonetaryTotal</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Document monetary totals</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:LineExtensionAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Sum of line amounts</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxExclusiveAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total without tax</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxInclusiveAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total with tax</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AllowanceTotalAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total allowances</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:ChargeTotalAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total charges</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PrepaidAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Prepaid amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PayableRoundingAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Rounding amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:PayableAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Amount payable/due</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..n</span>
+                        <span class="tree-element">cac:InvoiceLine</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Invoice line item</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Line identifier/number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Note</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Line note</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:InvoicedQuantity</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Invoiced quantity</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-attribute">@unitCode</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Unit of measure</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNECERec20/" class="codelist-link" target="_blank">↗ UNECERec20</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:LineExtensionAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Line net amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AccountingCost</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's accounting reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:InvoicePeriod</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Line period</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:OrderLineReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Order line reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:LineID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Referenced order line</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:AllowanceCharge</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Line allowances/charges</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Item</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Description</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Item description</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:Name</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:SellersItemIdentification</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Seller's item identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item ID</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:StandardItemIdentification</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Standard item identifier (e.g., GTIN)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Standard ID</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">          </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-attribute">@schemeID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Scheme identifier</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ICD/" class="codelist-link" target="_blank">↗ ICD</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:OriginCountry</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Country of origin</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:IdentificationCode</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Country code</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO3166/" class="codelist-link" target="_blank">↗ ISO3166</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:CommodityClassification</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Commodity classification</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ItemClassificationCode</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Classification code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">          </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-attribute">@listID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Classification scheme (e.g., STI, CPV)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:ClassifiedTaxCategory</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax category for item</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax category code</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL5305/" class="codelist-link" target="_blank">↗ UNCL5305</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Percent</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax rate</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:TaxScheme</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax scheme</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">          </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Tax scheme ID (e.g., "VAT")</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Price</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Price details</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:PriceAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item net price</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:BaseQuantity</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Base quantity for price</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-attribute">@unitCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Unit of measure</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNECERec20/" class="codelist-link" target="_blank">↗ UNECERec20</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:AllowanceCharge</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Price allowance/charge</span>
                     </div>
                 </div>
             </div>
 
-            <div class="category-header">📄 Core Business Documents</div>
-            <div class="documents-grid" id="coreDocuments">
-                <div class="document-card" data-name="invoice">
-                    <h3>Invoice</h3>
-                    <div class="doc-name">UBL-Invoice-2.1.xsd</div>
-                    <p>Standard invoice document for requesting payment for goods or services.</p>
-                    <div class="doc-size">Size: 60,178 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd" target="_blank">View Schema →</a>
+            <!-- CREDIT NOTE - będzie wyświetlana po kliknięciu -->
+            <div id="creditnote-section" class="doc-section hidden">
+                <h2>📄 UBL Credit Note 2.1</h2>
+
+                <div class="info-box">
+                    <strong>Credit Note</strong> - A document used to specify credits due to the Debtor from the Creditor (for returned goods or corrections).
                 </div>
 
-                <div class="document-card" data-name="credit note">
-                    <h3>Credit Note</h3>
-                    <div class="doc-name">UBL-CreditNote-2.1.xsd</div>
-                    <p>Document for crediting a customer for goods returned or pricing adjustments.</p>
-                    <div class="doc-size">Size: 57,697 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                <div class="tree">
+                    <div class="tree-item">
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">CreditNote</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Root element</span>
+                    </div>
 
-                <div class="document-card" data-name="debit note">
-                    <h3>Debit Note</h3>
-                    <div class="doc-name">UBL-DebitNote-2.1.xsd</div>
-                    <p>Document for debiting a customer for additional charges.</p>
-                    <div class="doc-size">Size: 55,434 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DebitNote-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:UBLVersionID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">UBL version identifier</span>
+                    </div>
 
-                <div class="document-card" data-name="order">
-                    <h3>Order</h3>
-                    <div class="doc-name">UBL-Order-2.1.xsd</div>
-                    <p>Purchase order document for requesting goods or services.</p>
-                    <div class="doc-size">Size: 53,715 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Order-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CustomizationID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Customization identifier</span>
+                    </div>
 
-                <div class="document-card" data-name="order response">
-                    <h3>Order Response</h3>
-                    <div class="doc-name">UBL-OrderResponse-2.1.xsd</div>
-                    <div class="doc-size">Size: 58,611 bytes</div>
-                    <p>Response to a purchase order indicating acceptance, rejection, or changes.</p>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-OrderResponse-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:ProfileID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Profile identifier</span>
+                    </div>
 
-                <div class="document-card" data-name="despatch advice">
-                    <h3>Despatch Advice</h3>
-                    <div class="doc-name">UBL-DespatchAdvice-2.1.xsd</div>
-                    <p>Notification of goods being dispatched to the customer.</p>
-                    <div class="doc-size">Size: 29,161 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DespatchAdvice-2.1.xsd" target="_blank">View Schema →</a>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Credit note number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CopyIndicator</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Copy indicator (true/false)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:IssueDate</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Issue date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:IssueTime</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Issue time</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxPointDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax point date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CreditNoteTypeCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Credit note type code</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL1001/" class="codelist-link" target="_blank">↗ UNCL1001</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cbc:Note</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Free-form text note</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:DocumentCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Document currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AccountingCost</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's accounting code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:BuyerReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:InvoicePeriod</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Invoicing period</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:OrderReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Order reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:BillingReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to original invoice being credited</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:InvoiceDocumentReference</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Invoice document reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Invoice number being credited</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:IssueDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Invoice issue date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:AccountingSupplierParty</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Supplier party (creditor) - same structure as Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:AccountingCustomerParty</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Customer party (debtor) - same structure as Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PayeeParty</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payee party</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:TaxTotal</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax total - same structure as Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:LegalMonetaryTotal</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Monetary totals - same structure as Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..n</span>
+                        <span class="tree-element">cac:CreditNoteLine</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Credit note line - similar structure to InvoiceLine</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Line number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:CreditedQuantity</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Credited quantity</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-attribute">@unitCode</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Unit of measure</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNECERec20/" class="codelist-link" target="_blank">↗ UNECERec20</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:LineExtensionAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Line net amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Item</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item information - same structure as Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Price</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Price details - same structure as Invoice</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="category-header">📦 Catalogue & Product Management</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="catalogue">
-                    <h3>Catalogue</h3>
-                    <div class="doc-name">UBL-Catalogue-2.1.xsd</div>
-                    <p>Product catalogue with pricing and specifications.</p>
-                    <div class="doc-size">Size: 33,781 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Catalogue-2.1.xsd" target="_blank">View Schema →</a>
+            <!-- DEBIT NOTE -->
+            <div id="debitnote-section" class="doc-section hidden">
+                <h2>📄 UBL Debit Note 2.1</h2>
+
+                <div class="info-box">
+                    <strong>Debit Note</strong> - A document used to specify debits due to the Creditor from the Debtor (for additional charges or corrections).
                 </div>
 
-                <div class="document-card" data-name="catalogue request">
-                    <h3>Catalogue Request</h3>
-                    <div class="doc-name">UBL-CatalogueRequest-2.1.xsd</div>
-                    <p>Request for a product catalogue.</p>
-                    <div class="doc-size">Size: 35,055 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CatalogueRequest-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                <div class="tree">
+                    <div class="tree-item">
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">DebitNote</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Root element</span>
+                    </div>
 
-                <div class="document-card" data-name="catalogue deletion">
-                    <h3>Catalogue Deletion</h3>
-                    <div class="doc-name">UBL-CatalogueDeletion-2.1.xsd</div>
-                    <p>Notification of catalogue items being removed.</p>
-                    <div class="doc-size">Size: 28,112 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CatalogueDeletion-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:UBLVersionID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">UBL version identifier</span>
+                    </div>
 
-                <div class="document-card" data-name="catalogue pricing update">
-                    <h3>Catalogue Pricing Update</h3>
-                    <div class="doc-name">UBL-CataloguePricingUpdate-2.1.xsd</div>
-                    <p>Update to catalogue item pricing.</p>
-                    <div class="doc-size">Size: 32,646 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CataloguePricingUpdate-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CustomizationID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Customization identifier</span>
+                    </div>
 
-                <div class="document-card" data-name="item information request">
-                    <h3>Item Information Request</h3>
-                    <div class="doc-name">UBL-ItemInformationRequest-2.1.xsd</div>
-                    <p>Request for detailed item information.</p>
-                    <div class="doc-size">Size: 24,439 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ItemInformationRequest-2.1.xsd" target="_blank">View Schema →</a>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Debit note number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:IssueDate</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Issue date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:IssueTime</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Issue time</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxPointDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax point date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:DebitNoteTypeCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Debit note type code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cbc:Note</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Free-form text note</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:DocumentCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Document currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AccountingCost</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's accounting code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:LineCountNumeric</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Number of lines</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:BuyerReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:InvoicePeriod</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Invoicing period</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:OrderReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Order reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:BillingReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to original document being debited</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:AccountingSupplierParty</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Supplier party (creditor)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:AccountingCustomerParty</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Customer party (debtor)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PayeeParty</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payee party</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:PaymentMeans</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payment means - similar to Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:AllowanceCharge</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Document level allowances/charges</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:TaxTotal</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax total</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:RequestedMonetaryTotal</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Monetary totals (similar to LegalMonetaryTotal in Invoice)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:LineExtensionAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Sum of line amounts</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxExclusiveAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total without tax</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxInclusiveAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total with tax</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:PayableAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Amount payable</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..n</span>
+                        <span class="tree-element">cac:DebitNoteLine</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Debit note line</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Line number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:DebitedQuantity</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Debited quantity</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-attribute">@unitCode</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Unit of measure</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNECERec20/" class="codelist-link" target="_blank">↗ UNECERec20</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:LineExtensionAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Line net amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Item</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Price</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Price details</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="category-header">🚚 Transport & Logistics</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="transport execution plan">
-                    <h3>Transport Execution Plan</h3>
-                    <div class="doc-name">UBL-TransportExecutionPlan-2.1.xsd</div>
-                    <p>Plan for executing transport of goods.</p>
-                    <div class="doc-size">Size: 49,006 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-TransportExecutionPlan-2.1.xsd" target="_blank">View Schema →</a>
+            <!-- ORDER -->
+            <div id="order-section" class="doc-section hidden">
+                <h2>📄 UBL Order 2.1</h2>
+
+                <div class="info-box">
+                    <strong>Order</strong> - A document used to order goods or services from a supplier (purchase order).
                 </div>
 
-                <div class="document-card" data-name="waybill">
-                    <h3>Waybill</h3>
-                    <div class="doc-name">UBL-Waybill-2.1.xsd</div>
-                    <p>Document accompanying goods in transit.</p>
-                    <div class="doc-size">Size: 31,171 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Waybill-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                <div class="tree">
+                    <div class="tree-item">
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">Order</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Root element</span>
+                    </div>
 
-                <div class="document-card" data-name="freight invoice">
-                    <h3>Freight Invoice</h3>
-                    <div class="doc-name">UBL-FreightInvoice-2.1.xsd</div>
-                    <p>Invoice for freight and transport services.</p>
-                    <div class="doc-size">Size: 52,990 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-FreightInvoice-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:UBLVersionID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">UBL version identifier</span>
+                    </div>
 
-                <div class="document-card" data-name="transportation status">
-                    <h3>Transportation Status</h3>
-                    <div class="doc-name">UBL-TransportationStatus-2.1.xsd</div>
-                    <p>Status update for goods in transit.</p>
-                    <div class="doc-size">Size: 34,960 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-TransportationStatus-2.1.xsd" target="_blank">View Schema →</a>
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CustomizationID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Customization identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:ProfileID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Profile identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Order number/identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:SalesOrderID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Sales order identifier (seller's reference)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CopyIndicator</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Copy indicator (true/false)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:IssueDate</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Order issue date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:IssueTime</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Order issue time</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:OrderTypeCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Order type code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cbc:Note</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Free-form text note</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:RequestedInvoiceCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Requested invoice currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:DocumentCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Document currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PricingCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Pricing currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxCurrencyCode</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax currency</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/ISO4217/" class="codelist-link" target="_blank">↗ ISO4217</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:CustomerReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Customer reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AccountingCost</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's accounting cost code</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:LineCountNumeric</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Number of order lines</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:ValidityPeriod</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Order validity period</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:EndDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Validity end date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:QuotationDocumentReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to quotation</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Quotation identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:OrderDocumentReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to previous order (for replacements)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:ContractDocumentReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Reference to contract</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:AdditionalDocumentReference</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Additional document references</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:BuyerCustomerParty</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Buyer party (customer placing order)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Party</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Party information - similar to Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:SellerSupplierParty</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Seller party (supplier receiving order)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Party</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Party information - similar to Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:OriginatorCustomerParty</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Originator of order (if different from buyer)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:AccountingCustomerParty</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Accounting customer party</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:Delivery</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Delivery instructions</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Quantity</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Delivery quantity</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:RequestedDeliveryDate</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Requested delivery date</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:RequestedDeliveryPeriod</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Requested delivery period</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:DeliveryLocation</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Delivery location (address)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:DeliveryParty</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Delivery party</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:DeliveryTerms</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Delivery terms (Incoterms)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Incoterms code</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL4053/" class="codelist-link" target="_blank">↗ UNCL4053</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:PaymentMeans</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payment means - similar to Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:PaymentTerms</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Payment terms</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:AllowanceCharge</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Document level allowances/charges</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:TaxTotal</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Tax total - similar to Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:AnticipatedMonetaryTotal</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Anticipated monetary totals</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:LineExtensionAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Sum of line amounts</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxExclusiveAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total without tax</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TaxInclusiveAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total with tax</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PayableAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Expected payable amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">  </span>
+                        <span class="tree-cardinality">1..n</span>
+                        <span class="tree-element">cac:OrderLine</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Order line item</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Note</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Line note</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">    </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:LineItem</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Line item details</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:ID</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Line number</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Quantity</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Ordered quantity</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-attribute">@unitCode</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Unit of measure</span>
+                        <a href="https://docs.peppol.eu/poacc/billing/3.0/codelist/UNECERec20/" class="codelist-link" target="_blank">↗ UNECERec20</a>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:LineExtensionAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Line net amount</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:TotalTaxAmount</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Total tax amount for line</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:PartialDeliveryIndicator</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Partial delivery allowed indicator</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:AccountingCost</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's accounting reference</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:Delivery</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Line-specific delivery information</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..n</span>
+                        <span class="tree-element">cac:AllowanceCharge</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Line allowances/charges</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cac:Item</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item information - similar to Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:Description</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Item description</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:Name</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item name</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:BuyersItemIdentification</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Buyer's item identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:SellersItemIdentification</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Seller's item identifier</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:StandardItemIdentification</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Standard identifier (GTIN, etc.)</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">      </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cac:Price</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Price details - similar to Invoice</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">1..1</span>
+                        <span class="tree-element">cbc:PriceAmount</span>
+                        <span class="tree-required">M</span>
+                        <span class="tree-description">Item price</span>
+                    </div>
+
+                    <div class="tree-item">
+                        <span class="tree-indent">        </span>
+                        <span class="tree-cardinality">0..1</span>
+                        <span class="tree-element">cbc:BaseQuantity</span>
+                        <span class="tree-optional">O</span>
+                        <span class="tree-description">Base quantity for price</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="category-header">📋 Procurement & Tendering</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="request for quotation">
-                    <h3>Request for Quotation</h3>
-                    <div class="doc-name">UBL-RequestForQuotation-2.1.xsd</div>
-                    <p>Request for price quotation from suppliers.</p>
-                    <div class="doc-size">Size: 31,637 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-RequestForQuotation-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="quotation">
-                    <h3>Quotation</h3>
-                    <div class="doc-name">UBL-Quotation-2.1.xsd</div>
-                    <p>Price quotation in response to RFQ.</p>
-                    <div class="doc-size">Size: 34,852 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Quotation-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="call for tenders">
-                    <h3>Call for Tenders</h3>
-                    <div class="doc-name">UBL-CallForTenders-2.1.xsd</div>
-                    <p>Invitation to submit tender proposals.</p>
-                    <div class="doc-size">Size: 31,099 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CallForTenders-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="tender">
-                    <h3>Tender</h3>
-                    <div class="doc-name">UBL-Tender-2.1.xsd</div>
-                    <p>Tender submission document.</p>
-                    <div class="doc-size">Size: 27,780 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Tender-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-            </div>
-
-            <div class="category-header">💰 Financial Documents</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="statement">
-                    <h3>Statement</h3>
-                    <div class="doc-name">UBL-Statement-2.1.xsd</div>
-                    <p>Account statement document.</p>
-                    <div class="doc-size">Size: 35,682 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Statement-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="remittance advice">
-                    <h3>Remittance Advice</h3>
-                    <div class="doc-name">UBL-RemittanceAdvice-2.1.xsd</div>
-                    <p>Payment notification and details.</p>
-                    <div class="doc-size">Size: 34,395 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-RemittanceAdvice-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="reminder">
-                    <h3>Reminder</h3>
-                    <div class="doc-name">UBL-Reminder-2.1.xsd</div>
-                    <p>Payment reminder for overdue invoices.</p>
-                    <div class="doc-size">Size: 45,702 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Reminder-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="self billed invoice">
-                    <h3>Self-Billed Invoice</h3>
-                    <div class="doc-name">UBL-SelfBilledInvoice-2.1.xsd</div>
-                    <p>Invoice created by the buyer on behalf of the supplier.</p>
-                    <div class="doc-size">Size: 57,368 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-SelfBilledInvoice-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-            </div>
-
-            <div class="category-header">📨 Application & Status Documents</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="application response">
-                    <h3>Application Response</h3>
-                    <div class="doc-name">UBL-ApplicationResponse-2.1.xsd</div>
-                    <p>Generic response document for business processes.</p>
-                    <div class="doc-size">Size: 21,665 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ApplicationResponse-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="document status">
-                    <h3>Document Status</h3>
-                    <div class="doc-name">UBL-DocumentStatus-2.1.xsd</div>
-                    <p>Status information about a business document.</p>
-                    <div class="doc-size">Size: 20,761 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DocumentStatus-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="exception notification">
-                    <h3>Exception Notification</h3>
-                    <div class="doc-name">UBL-ExceptionNotification-2.1.xsd</div>
-                    <p>Notification of an exception in a business process.</p>
-                    <div class="doc-size">Size: 24,540 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ExceptionNotification-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-            </div>
         </div>
     </div>
 
     <footer>
         <div class="container">
-            <p>UBL 2.1 Documentation | Maintained by OASIS</p>
-            <p style="margin-top: 0.5rem; opacity: 0.8;">Original schemas: <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/" style="color: #a0c4ff;">OASIS UBL 2.1</a></p>
+            <p><strong>UBL 2.1 Documentation</strong></p>
+            <p style="margin-top: 0.5rem;">Maintained by OASIS | Schema documentation based on <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/">UBL 2.1 Specification</a></p>
+            <p style="margin-top: 1rem; opacity: 0.8; font-size: 0.9rem;">This documentation follows the structure of <a href="https://docs.peppol.eu/">Peppol BIS Documentation</a></p>
         </div>
     </footer>
 
     <script>
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        const allCards = document.querySelectorAll('.document-card');
+        function showDoc(docType) {
+            // Ukryj wszystkie sekcje
+            document.querySelectorAll('.doc-section').forEach(section => {
+                section.classList.add('hidden');
+            });
 
-        searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
+            // Pokaż wybraną sekcję
+            document.getElementById(docType + '-section').classList.remove('hidden');
 
-            allCards.forEach(card => {
-                const cardName = card.getAttribute('data-name') || '';
-                const cardText = card.textContent.toLowerCase();
+            // Aktualizuj nawigację
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
 
-                if (cardText.includes(searchTerm) || cardName.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+            // Przewiń do góry
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // Obsługa linków nawigacyjnych
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const docType = this.getAttribute('href').substring(1);
+                showDoc(docType);
             });
         });
     </script>
