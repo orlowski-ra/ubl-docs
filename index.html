@@ -3,466 +3,614 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UBL 2.1 Documentation</title>
+    <title>UBL 2.1 Invoice Structure Viewer</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f4f6f8;
+            --border-color: #d1d5db;
+            --text-color: #333;
+            --sidebar-width: 450px;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f7fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--primary-color);
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+            display: flex;
+            flex: 1;
+            overflow: hidden;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        /* Tree Sidebar */
+        .tree-sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .search-box {
-            background: white;
-            padding: 2rem;
-            margin: -30px auto 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 800px;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            background: #f9fafb;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .search-input {
+        .search-box input {
             width: 100%;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            transition: border-color 0.3s;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
         }
 
-        .search-input:focus {
-            outline: none;
-            border-color: #667eea;
+        .tree-content {
+            padding: 10px;
         }
 
-        .content {
-            padding: 2rem 0;
-        }
-
-        .intro {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .intro h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-
-        .documents-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .document-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-left: 4px solid #667eea;
-        }
-
-        .document-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .document-card h3 {
-            color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .document-card .doc-name {
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-family: monospace;
+        /* Tree Node Styles */
+        .tree-node {
             font-size: 0.9rem;
+            line-height: 1.5;
         }
 
-        .document-card .doc-size {
-            color: #999;
-            font-size: 0.85rem;
-        }
-
-        .category-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0 1rem;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        footer {
-            background: #2d3748;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-        }
-
-        .stats {
+        .node-header {
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 3px;
             display: flex;
-            gap: 2rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
+            align-items: center;
+            white-space: nowrap;
         }
 
-        .stat-item {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 6px;
-            flex: 1;
-            min-width: 150px;
+        .node-header:hover {
+            background-color: #eef2ff;
         }
 
-        .stat-number {
-            font-size: 2rem;
+        .node-header.active {
+            background-color: #e0e7ff;
+            font-weight: 500;
+        }
+
+        .toggle-icon {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 4px;
+            font-family: monospace;
+            color: #6b7280;
+        }
+
+        .node-icon {
+            margin-right: 6px;
+            font-size: 0.8em;
+            width: 16px;
+            text-align: center;
+            border-radius: 2px;
             font-weight: bold;
-            color: #667eea;
         }
 
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
+        .icon-cac { color: #d97706; background: #fef3c7; border: 1px solid #fcd34d; } /* Aggregate */
+        .icon-cbc { color: #059669; background: #d1fae5; border: 1px solid #6ee7b7; } /* Basic */
+
+        .node-name {
+            color: var(--text-color);
         }
 
-        a {
-            color: #667eea;
-            text-decoration: none;
+        .node-cardinality {
+            margin-left: auto;
+            font-size: 0.75em;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 1px 4px;
+            border-radius: 4px;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .children-container {
+            margin-left: 18px;
+            border-left: 1px solid #e5e7eb;
+        }
+
+        /* Details Panel */
+        .details-panel {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+
+        .detail-card {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .detail-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .detail-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+        }
+
+        .detail-path {
+            font-family: monospace;
+            color: #6b7280;
+            font-size: 0.9em;
+            background: #f3f4f6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .value {
+            color: #111827;
+        }
+
+        .description-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.6;
+        }
+
+        .enum-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .error-message {
+            color: #dc2626;
+            text-align: center;
+            max-width: 500px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>UBL 2.1 Documentation</h1>
-            <p class="subtitle">Universal Business Language 2.1 - Schema Documentation</p>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="search-box">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search for document types... (e.g., Invoice, Order, Catalogue)">
+    <div id="app">
+        <div v-if="loading" class="loading-overlay">
+            <div class="spinner"></div>
+            <p>{{ loadingStatus }}</p>
         </div>
 
-        <div class="content">
-            <div class="intro">
-                <h2>About UBL 2.1</h2>
-                <p>Universal Business Language (UBL) is a library of standard electronic XML business documents such as purchase orders and invoices. UBL 2.1 is maintained by OASIS and provides a royalty-free standard for business document exchange.</p>
+        <div v-if="error" class="loading-overlay">
+            <div class="error-message">
+                <h3>Error Loading Schema</h3>
+                <p>{{ error }}</p>
+                <button @click="loadSchema" style="margin-top:10px; padding: 8px 16px; cursor:pointer;">Retry</button>
+            </div>
+        </div>
 
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-number">66</div>
-                        <div class="stat-label">Document Types</div>
+        <header>
+            <h1>UBL 2.1 Structure Viewer (Invoice)</h1>
+            <div style="font-size: 0.8rem; color: #666;">
+                Based on OASIS UBL 2.1 Standard
+            </div>
+        </header>
+
+        <div class="container" v-if="rootNode">
+            <div class="tree-sidebar">
+                <div class="search-box">
+                    <input type="text" v-model="searchQuery" placeholder="Search elements..." @input="handleSearch">
+                </div>
+                <div class="tree-content">
+                    <tree-node 
+                        :node="rootNode" 
+                        :selected-id="selectedNodeId"
+                        :depth="0"
+                        :search-query="searchQuery"
+                        @select="selectNode"
+                        @toggle="toggleNode">
+                    </tree-node>
+                </div>
+            </div>
+
+            <div class="details-panel">
+                <div v-if="selectedNode" class="detail-card">
+                    <div class="detail-header">
+                        <h2 class="detail-title">{{ selectedNode.name }}</h2>
+                        <div class="detail-path">{{ selectedNode.path }}</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">2.1</div>
-                        <div class="stat-label">Version</div>
+
+                    <div class="info-grid">
+                        <div class="label">Cardinality</div>
+                        <div class="value">
+                            <span :style="{color: selectedNode.required ? '#dc2626' : '#059669', fontWeight: 'bold'}">
+                                {{ selectedNode.min }}..{{ selectedNode.max === -1 ? 'n' : selectedNode.max }}
+                            </span>
+                            <span v-if="selectedNode.required"> (Mandatory)</span>
+                            <span v-else> (Optional)</span>
+                        </div>
+
+                        <div class="label">Type</div>
+                        <div class="value">{{ selectedNode.type || 'Aggregate' }}</div>
+
+                        <div class="label">Namespace</div>
+                        <div class="value">{{ selectedNode.namespace }}</div>
+
+                        <div class="label">Description</div>
+                        <div class="value description-box">{{ selectedNode.description || 'No description available.' }}</div>
+
+                        <div class="label" v-if="selectedNode.enums && selectedNode.enums.length">Allowed Values</div>
+                        <div class="value" v-if="selectedNode.enums && selectedNode.enums.length">
+                            <ul class="enum-list">
+                                <li v-for="val in selectedNode.enums" :key="val">{{ val }}</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">2013</div>
-                        <div class="stat-label">Released</div>
-                    </div>
                 </div>
-            </div>
-
-            <div class="category-header">📄 Core Business Documents</div>
-            <div class="documents-grid" id="coreDocuments">
-                <div class="document-card" data-name="invoice">
-                    <h3>Invoice</h3>
-                    <div class="doc-name">UBL-Invoice-2.1.xsd</div>
-                    <p>Standard invoice document for requesting payment for goods or services.</p>
-                    <div class="doc-size">Size: 60,178 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="credit note">
-                    <h3>Credit Note</h3>
-                    <div class="doc-name">UBL-CreditNote-2.1.xsd</div>
-                    <p>Document for crediting a customer for goods returned or pricing adjustments.</p>
-                    <div class="doc-size">Size: 57,697 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="debit note">
-                    <h3>Debit Note</h3>
-                    <div class="doc-name">UBL-DebitNote-2.1.xsd</div>
-                    <p>Document for debiting a customer for additional charges.</p>
-                    <div class="doc-size">Size: 55,434 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DebitNote-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="order">
-                    <h3>Order</h3>
-                    <div class="doc-name">UBL-Order-2.1.xsd</div>
-                    <p>Purchase order document for requesting goods or services.</p>
-                    <div class="doc-size">Size: 53,715 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Order-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="order response">
-                    <h3>Order Response</h3>
-                    <div class="doc-name">UBL-OrderResponse-2.1.xsd</div>
-                    <div class="doc-size">Size: 58,611 bytes</div>
-                    <p>Response to a purchase order indicating acceptance, rejection, or changes.</p>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-OrderResponse-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="despatch advice">
-                    <h3>Despatch Advice</h3>
-                    <div class="doc-name">UBL-DespatchAdvice-2.1.xsd</div>
-                    <p>Notification of goods being dispatched to the customer.</p>
-                    <div class="doc-size">Size: 29,161 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DespatchAdvice-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-            </div>
-
-            <div class="category-header">📦 Catalogue & Product Management</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="catalogue">
-                    <h3>Catalogue</h3>
-                    <div class="doc-name">UBL-Catalogue-2.1.xsd</div>
-                    <p>Product catalogue with pricing and specifications.</p>
-                    <div class="doc-size">Size: 33,781 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Catalogue-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="catalogue request">
-                    <h3>Catalogue Request</h3>
-                    <div class="doc-name">UBL-CatalogueRequest-2.1.xsd</div>
-                    <p>Request for a product catalogue.</p>
-                    <div class="doc-size">Size: 35,055 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CatalogueRequest-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="catalogue deletion">
-                    <h3>Catalogue Deletion</h3>
-                    <div class="doc-name">UBL-CatalogueDeletion-2.1.xsd</div>
-                    <p>Notification of catalogue items being removed.</p>
-                    <div class="doc-size">Size: 28,112 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CatalogueDeletion-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="catalogue pricing update">
-                    <h3>Catalogue Pricing Update</h3>
-                    <div class="doc-name">UBL-CataloguePricingUpdate-2.1.xsd</div>
-                    <p>Update to catalogue item pricing.</p>
-                    <div class="doc-size">Size: 32,646 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CataloguePricingUpdate-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="item information request">
-                    <h3>Item Information Request</h3>
-                    <div class="doc-name">UBL-ItemInformationRequest-2.1.xsd</div>
-                    <p>Request for detailed item information.</p>
-                    <div class="doc-size">Size: 24,439 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ItemInformationRequest-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-            </div>
-
-            <div class="category-header">🚚 Transport & Logistics</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="transport execution plan">
-                    <h3>Transport Execution Plan</h3>
-                    <div class="doc-name">UBL-TransportExecutionPlan-2.1.xsd</div>
-                    <p>Plan for executing transport of goods.</p>
-                    <div class="doc-size">Size: 49,006 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-TransportExecutionPlan-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="waybill">
-                    <h3>Waybill</h3>
-                    <div class="doc-name">UBL-Waybill-2.1.xsd</div>
-                    <p>Document accompanying goods in transit.</p>
-                    <div class="doc-size">Size: 31,171 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Waybill-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="freight invoice">
-                    <h3>Freight Invoice</h3>
-                    <div class="doc-name">UBL-FreightInvoice-2.1.xsd</div>
-                    <p>Invoice for freight and transport services.</p>
-                    <div class="doc-size">Size: 52,990 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-FreightInvoice-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="transportation status">
-                    <h3>Transportation Status</h3>
-                    <div class="doc-name">UBL-TransportationStatus-2.1.xsd</div>
-                    <p>Status update for goods in transit.</p>
-                    <div class="doc-size">Size: 34,960 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-TransportationStatus-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-            </div>
-
-            <div class="category-header">📋 Procurement & Tendering</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="request for quotation">
-                    <h3>Request for Quotation</h3>
-                    <div class="doc-name">UBL-RequestForQuotation-2.1.xsd</div>
-                    <p>Request for price quotation from suppliers.</p>
-                    <div class="doc-size">Size: 31,637 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-RequestForQuotation-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="quotation">
-                    <h3>Quotation</h3>
-                    <div class="doc-name">UBL-Quotation-2.1.xsd</div>
-                    <p>Price quotation in response to RFQ.</p>
-                    <div class="doc-size">Size: 34,852 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Quotation-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="call for tenders">
-                    <h3>Call for Tenders</h3>
-                    <div class="doc-name">UBL-CallForTenders-2.1.xsd</div>
-                    <p>Invitation to submit tender proposals.</p>
-                    <div class="doc-size">Size: 31,099 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CallForTenders-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="tender">
-                    <h3>Tender</h3>
-                    <div class="doc-name">UBL-Tender-2.1.xsd</div>
-                    <p>Tender submission document.</p>
-                    <div class="doc-size">Size: 27,780 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Tender-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-            </div>
-
-            <div class="category-header">💰 Financial Documents</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="statement">
-                    <h3>Statement</h3>
-                    <div class="doc-name">UBL-Statement-2.1.xsd</div>
-                    <p>Account statement document.</p>
-                    <div class="doc-size">Size: 35,682 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Statement-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="remittance advice">
-                    <h3>Remittance Advice</h3>
-                    <div class="doc-name">UBL-RemittanceAdvice-2.1.xsd</div>
-                    <p>Payment notification and details.</p>
-                    <div class="doc-size">Size: 34,395 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-RemittanceAdvice-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="reminder">
-                    <h3>Reminder</h3>
-                    <div class="doc-name">UBL-Reminder-2.1.xsd</div>
-                    <p>Payment reminder for overdue invoices.</p>
-                    <div class="doc-size">Size: 45,702 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Reminder-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="self billed invoice">
-                    <h3>Self-Billed Invoice</h3>
-                    <div class="doc-name">UBL-SelfBilledInvoice-2.1.xsd</div>
-                    <p>Invoice created by the buyer on behalf of the supplier.</p>
-                    <div class="doc-size">Size: 57,368 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-SelfBilledInvoice-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-            </div>
-
-            <div class="category-header">📨 Application & Status Documents</div>
-            <div class="documents-grid">
-                <div class="document-card" data-name="application response">
-                    <h3>Application Response</h3>
-                    <div class="doc-name">UBL-ApplicationResponse-2.1.xsd</div>
-                    <p>Generic response document for business processes.</p>
-                    <div class="doc-size">Size: 21,665 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ApplicationResponse-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="document status">
-                    <h3>Document Status</h3>
-                    <div class="doc-name">UBL-DocumentStatus-2.1.xsd</div>
-                    <p>Status information about a business document.</p>
-                    <div class="doc-size">Size: 20,761 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DocumentStatus-2.1.xsd" target="_blank">View Schema →</a>
-                </div>
-
-                <div class="document-card" data-name="exception notification">
-                    <h3>Exception Notification</h3>
-                    <div class="doc-name">UBL-ExceptionNotification-2.1.xsd</div>
-                    <p>Notification of an exception in a business process.</p>
-                    <div class="doc-size">Size: 24,540 bytes</div>
-                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ExceptionNotification-2.1.xsd" target="_blank">View Schema →</a>
+                <div v-else style="color: #999; text-align: center; margin-top: 50px;">
+                    Select an element from the tree to view details.
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>UBL 2.1 Documentation | Maintained by OASIS</p>
-            <p style="margin-top: 0.5rem; opacity: 0.8;">Original schemas: <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/" style="color: #a0c4ff;">OASIS UBL 2.1</a></p>
-        </div>
-    </footer>
-
     <script>
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        const allCards = document.querySelectorAll('.document-card');
+        const { createApp, ref, computed, reactive } = Vue;
 
-        searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
+        // Recursive Tree Component
+        const TreeNode = {
+            name: 'TreeNode',
+            props: ['node', 'selectedId', 'depth', 'searchQuery'],
+            emits: ['select', 'toggle'],
+            template: `
+                <div class="tree-node" v-show="node.visible !== false">
+                    <div 
+                        class="node-header" 
+                        :class="{ active: selectedId === node.id }"
+                        :style="{ paddingLeft: (depth * 10) + 'px' }"
+                        @click="$emit('select', node)"
+                    >
+                        <span 
+                            class="toggle-icon" 
+                            @click.stop="$emit('toggle', node)"
+                        >
+                            {{ node.children && node.children.length ? (node.expanded ? '▼' : '▶') : '' }}
+                        </span>
+                        
+                        <span class="node-icon" :class="node.isAggregate ? 'icon-cac' : 'icon-cbc'">
+                            {{ node.isAggregate ? 'A' : 'E' }}
+                        </span>
 
-            allCards.forEach(card => {
-                const cardName = card.getAttribute('data-name') || '';
-                const cardText = card.textContent.toLowerCase();
+                        <span class="node-name">{{ node.name }}</span>
+                        
+                        <span class="node-cardinality">
+                            {{ node.min }}..{{ node.max === -1 ? 'n' : node.max }}
+                        </span>
+                    </div>
 
-                if (cardText.includes(searchTerm) || cardName.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
+                    <div v-if="node.expanded && node.children" class="children-container">
+                        <tree-node 
+                            v-for="child in node.children" 
+                            :key="child.id"
+                            :node="child"
+                            :selected-id="selectedId"
+                            :depth="depth + 1"
+                            :search-query="searchQuery"
+                            @select="$emit('select', $event)"
+                            @toggle="$emit('toggle', $event)"
+                        ></tree-node>
+                    </div>
+                </div>
+            `
+        };
+
+        createApp({
+            components: { TreeNode },
+            setup() {
+                const loading = ref(true);
+                const loadingStatus = ref('Initializing...');
+                const error = ref(null);
+                const rootNode = ref(null);
+                const selectedNode = ref(null);
+                const selectedNodeId = ref(null);
+                const searchQuery = ref('');
+
+                // CDN URLs for UBL 2.1 JSON Schema (via Tradeshift Repo)
+                const BASE_URL = 'https://cdn.jsdelivr.net/gh/Tradeshift/tradeshift-ubl-jsonschema@master/src/main/resources/org/oasis-open/ubl/schemas/';
+                const MAIN_DOC_URL = BASE_URL + 'maindoc/UBL-Invoice-2.1.json';
+
+                // Cache for fetched schemas
+                const schemaCache = new Map();
+
+                const fetchSchema = async (url) => {
+                    if (schemaCache.has(url)) return schemaCache.get(url);
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error(`Failed to fetch ${url}`);
+                    const json = await res.json();
+                    schemaCache.set(url, json);
+                    return json;
+                };
+
+                const resolveRef = async (ref, contextUrl) => {
+                    // Ref format: "../common/UBL-CommonBasicComponents-2.1.json#/definitions/UBLVersionID"
+                    const [filePart, defPart] = ref.split('#');
+                    
+                    // Resolve file URL relative to contextUrl
+                    const currentDir = contextUrl.substring(0, contextUrl.lastIndexOf('/') + 1);
+                    // Simple relative path resolution
+                    const targetUrl = new URL(filePart, currentDir).href;
+                    
+                    const schema = await fetchSchema(targetUrl);
+                    
+                    // Navigate to definition
+                    const path = defPart.replace('/definitions/', '');
+                    if (schema.definitions && schema.definitions[path]) {
+                        return { schema: schema.definitions[path], url: targetUrl };
+                    }
+                    throw new Error(`Definition ${path} not found in ${targetUrl}`);
+                };
+
+                // Build tree recursively
+                const buildTree = async (schemaNode, name, path, contextUrl, isRoot = false) => {
+                    const node = {
+                        id: path,
+                        name: name,
+                        path: path,
+                        description: schemaNode.description || '',
+                        min: schemaNode.minItems || 0,
+                        max: schemaNode.maxItems || -1, // -1 means unbounded
+                        required: (schemaNode.minItems || 0) > 0,
+                        expanded: isRoot,
+                        visible: true,
+                        children: [],
+                        isAggregate: false,
+                        type: '',
+                        enums: [],
+                        namespace: ''
+                    };
+
+                    // Handle $ref (The item definition)
+                    let definition = schemaNode;
+                    let definitionUrl = contextUrl;
+
+                    if (schemaNode.items && schemaNode.items.$ref) {
+                        const resolved = await resolveRef(schemaNode.items.$ref, contextUrl);
+                        definition = resolved.schema;
+                        definitionUrl = resolved.url;
+                    }
+
+                    node.description = definition.description || node.description;
+                    node.title = definition.title;
+                    
+                    // Determine Type
+                    if (definition.type === 'object' || definition.properties) {
+                        node.isAggregate = true;
+                        node.type = 'Aggregate';
+                    } else if (definition.type === 'string' || definition.type === 'number' || definition.type === 'boolean') {
+                        node.type = definition.type;
+                    } else if (definition.base) {
+                         node.type = definition.base; // Sometimes used in UBL schemas
+                    }
+
+                    // Extract Namespace from URL (crude heuristic)
+                    if (definitionUrl.includes('CommonAggregateComponents')) node.namespace = 'cac';
+                    else if (definitionUrl.includes('CommonBasicComponents')) node.namespace = 'cbc';
+                    else if (definitionUrl.includes('Invoice')) node.namespace = 'inv';
+                    else node.namespace = 'ubl';
+
+                    // Extract Enums
+                    if (definition.enum) {
+                        node.enums = definition.enum;
+                    }
+
+                    // Recursively process properties if Aggregate
+                    if (node.isAggregate && definition.properties) {
+                        // For performance, we might want to load children on expand, but for this size, pre-loading is okayish?
+                        // Actually UBL is huge. We MUST be careful. 
+                        // However, the JSON schema structure is essentially tree-like. 
+                        // Circular refs are possible in UBL (e.g. Party -> .. -> Party).
+                        // To prevent infinite loops, check depth or path repetition.
+                        
+                        // Limit depth to prevent infinite recursion on circular types (common in UBL)
+                        // Or check if we are already in a node of this type in the ancestry.
+                        const pathParts = path.split('/');
+                        const depth = pathParts.length;
+                        // 15 is a safe generic depth limit for UBL Invoice
+                        if (depth < 15) { 
+                             const props = Object.entries(definition.properties);
+                             for (const [propName, propSchema] of props) {
+                                // Skip internal fields if any
+                                if (propName.startsWith('_')) continue; 
+                                
+                                // To avoid freezing UI, we might need to use requestAnimationFrame or chunking if it was massive,
+                                // but we will do a simplified non-blocking recursive build for the root's immediate children,
+                                // and maybe lazy load deeper? 
+                                // For this implementation, let's try building 2 levels deep, then lazy load?
+                                // "1:1 Peppol" loads everything. Let's try to load fully but handle circular refs.
+                                
+                                // Circular Ref Check: If the current property name appeared recently in parents
+                                // UBL is mostly hierarchical.
+                                
+                                const childNode = await buildTree(propSchema, propName, `${path}/${propName}`, definitionUrl);
+                                node.children.push(childNode);
+                             }
+                        }
+                    }
+
+                    return node;
+                };
+                
+                // We need a specific builder for the Root Invoice
+                const loadSchema = async () => {
+                    loading.value = true;
+                    error.value = null;
+                    try {
+                        loadingStatus.value = 'Fetching Invoice Schema...';
+                        const mainSchema = await fetchSchema(MAIN_DOC_URL);
+                        
+                        loadingStatus.value = 'Building Tree Structure...';
+                        
+                        // Transform the flat properties of Invoice into our Node structure
+                        const root = {
+                            id: 'Invoice',
+                            name: 'Invoice',
+                            path: '/Invoice',
+                            description: mainSchema.description || 'A document used to request payment.',
+                            min: 1,
+                            max: 1,
+                            required: true,
+                            expanded: true,
+                            visible: true,
+                            children: [],
+                            isAggregate: true,
+                            type: 'Document',
+                            namespace: 'inv'
+                        };
+
+                        const props = Object.entries(mainSchema.properties);
+                        // Process concurrently
+                        const childrenPromises = props.map(async ([key, schema]) => {
+                             // Skip metadata fields like UBLExtensions for clarity if desired, keeping for 1:1
+                             return await buildTree(schema, key, `/Invoice/${key}`, MAIN_DOC_URL);
+                        });
+
+                        root.children = await Promise.all(childrenPromises);
+                        
+                        // Sort children: CBC first (Elements), then CAC (Aggregates) usually looks better, or alphabetical.
+                        // Peppol standard order is usually schema order. We keep schema order.
+                        
+                        rootNode.value = root;
+                        selectNode(root);
+
+                    } catch (e) {
+                        console.error(e);
+                        error.value = e.message + ". \nCheck your internet connection or if the CDN is reachable.";
+                    } finally {
+                        loading.value = false;
+                    }
+                };
+
+                const selectNode = (node) => {
+                    selectedNode.value = node;
+                    selectedNodeId.value = node.id;
+                };
+
+                const toggleNode = (node) => {
+                    node.expanded = !node.expanded;
+                };
+
+                const handleSearch = () => {
+                    if (!rootNode.value) return;
+                    const q = searchQuery.value.toLowerCase();
+                    
+                    const filterRecursive = (node) => {
+                        const nameMatch = node.name.toLowerCase().includes(q);
+                        const pathMatch = node.path.toLowerCase().includes(q);
+                        let childMatch = false;
+
+                        if (node.children) {
+                            node.children.forEach(child => {
+                                const cMatch = filterRecursive(child);
+                                if (cMatch) childMatch = true;
+                            });
+                        }
+
+                        // If search is empty, show everything (collapsed state maintained logic can be complex, simply expand all if searching)
+                        if (!q) {
+                            node.visible = true;
+                            return true;
+                        }
+
+                        const match = nameMatch || pathMatch || childMatch;
+                        node.visible = match;
+                        if (match && childMatch) node.expanded = true; // Expand if children match
+                        return match;
+                    };
+
+                    filterRecursive(rootNode.value);
+                };
+
+                // Init
+                loadSchema();
+
+                return {
+                    loading,
+                    loadingStatus,
+                    error,
+                    rootNode,
+                    selectedNode,
+                    selectedNodeId,
+                    searchQuery,
+                    selectNode,
+                    toggleNode,
+                    handleSearch,
+                    loadSchema
+                };
+            }
+        }).mount('#app');
     </script>
 </body>
 </html>
