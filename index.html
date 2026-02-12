@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBL 2.1 Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .search-box {
+            background: white;
+            padding: 2rem;
+            margin: -30px auto 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .content {
+            padding: 2rem 0;
+        }
+
+        .intro {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .intro h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .document-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #667eea;
+        }
+
+        .document-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .document-card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .document-card .doc-name {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .document-card .doc-size {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>UBL 2.1 Documentation</h1>
+            <p class="subtitle">Universal Business Language 2.1 - Schema Documentation</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search for document types... (e.g., Invoice, Order, Catalogue)">
+        </div>
+
+        <div class="content">
+            <div class="intro">
+                <h2>About UBL 2.1</h2>
+                <p>Universal Business Language (UBL) is a library of standard electronic XML business documents such as purchase orders and invoices. UBL 2.1 is maintained by OASIS and provides a royalty-free standard for business document exchange.</p>
+
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">66</div>
+                        <div class="stat-label">Document Types</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">2.1</div>
+                        <div class="stat-label">Version</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">2013</div>
+                        <div class="stat-label">Released</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-header">📄 Core Business Documents</div>
+            <div class="documents-grid" id="coreDocuments">
+                <div class="document-card" data-name="invoice">
+                    <h3>Invoice</h3>
+                    <div class="doc-name">UBL-Invoice-2.1.xsd</div>
+                    <p>Standard invoice document for requesting payment for goods or services.</p>
+                    <div class="doc-size">Size: 60,178 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="credit note">
+                    <h3>Credit Note</h3>
+                    <div class="doc-name">UBL-CreditNote-2.1.xsd</div>
+                    <p>Document for crediting a customer for goods returned or pricing adjustments.</p>
+                    <div class="doc-size">Size: 57,697 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="debit note">
+                    <h3>Debit Note</h3>
+                    <div class="doc-name">UBL-DebitNote-2.1.xsd</div>
+                    <p>Document for debiting a customer for additional charges.</p>
+                    <div class="doc-size">Size: 55,434 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DebitNote-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="order">
+                    <h3>Order</h3>
+                    <div class="doc-name">UBL-Order-2.1.xsd</div>
+                    <p>Purchase order document for requesting goods or services.</p>
+                    <div class="doc-size">Size: 53,715 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Order-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="order response">
+                    <h3>Order Response</h3>
+                    <div class="doc-name">UBL-OrderResponse-2.1.xsd</div>
+                    <div class="doc-size">Size: 58,611 bytes</div>
+                    <p>Response to a purchase order indicating acceptance, rejection, or changes.</p>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-OrderResponse-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="despatch advice">
+                    <h3>Despatch Advice</h3>
+                    <div class="doc-name">UBL-DespatchAdvice-2.1.xsd</div>
+                    <p>Notification of goods being dispatched to the customer.</p>
+                    <div class="doc-size">Size: 29,161 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DespatchAdvice-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+            </div>
+
+            <div class="category-header">📦 Catalogue & Product Management</div>
+            <div class="documents-grid">
+                <div class="document-card" data-name="catalogue">
+                    <h3>Catalogue</h3>
+                    <div class="doc-name">UBL-Catalogue-2.1.xsd</div>
+                    <p>Product catalogue with pricing and specifications.</p>
+                    <div class="doc-size">Size: 33,781 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Catalogue-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="catalogue request">
+                    <h3>Catalogue Request</h3>
+                    <div class="doc-name">UBL-CatalogueRequest-2.1.xsd</div>
+                    <p>Request for a product catalogue.</p>
+                    <div class="doc-size">Size: 35,055 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CatalogueRequest-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="catalogue deletion">
+                    <h3>Catalogue Deletion</h3>
+                    <div class="doc-name">UBL-CatalogueDeletion-2.1.xsd</div>
+                    <p>Notification of catalogue items being removed.</p>
+                    <div class="doc-size">Size: 28,112 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CatalogueDeletion-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="catalogue pricing update">
+                    <h3>Catalogue Pricing Update</h3>
+                    <div class="doc-name">UBL-CataloguePricingUpdate-2.1.xsd</div>
+                    <p>Update to catalogue item pricing.</p>
+                    <div class="doc-size">Size: 32,646 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CataloguePricingUpdate-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="item information request">
+                    <h3>Item Information Request</h3>
+                    <div class="doc-name">UBL-ItemInformationRequest-2.1.xsd</div>
+                    <p>Request for detailed item information.</p>
+                    <div class="doc-size">Size: 24,439 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ItemInformationRequest-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+            </div>
+
+            <div class="category-header">🚚 Transport & Logistics</div>
+            <div class="documents-grid">
+                <div class="document-card" data-name="transport execution plan">
+                    <h3>Transport Execution Plan</h3>
+                    <div class="doc-name">UBL-TransportExecutionPlan-2.1.xsd</div>
+                    <p>Plan for executing transport of goods.</p>
+                    <div class="doc-size">Size: 49,006 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-TransportExecutionPlan-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="waybill">
+                    <h3>Waybill</h3>
+                    <div class="doc-name">UBL-Waybill-2.1.xsd</div>
+                    <p>Document accompanying goods in transit.</p>
+                    <div class="doc-size">Size: 31,171 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Waybill-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="freight invoice">
+                    <h3>Freight Invoice</h3>
+                    <div class="doc-name">UBL-FreightInvoice-2.1.xsd</div>
+                    <p>Invoice for freight and transport services.</p>
+                    <div class="doc-size">Size: 52,990 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-FreightInvoice-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="transportation status">
+                    <h3>Transportation Status</h3>
+                    <div class="doc-name">UBL-TransportationStatus-2.1.xsd</div>
+                    <p>Status update for goods in transit.</p>
+                    <div class="doc-size">Size: 34,960 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-TransportationStatus-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+            </div>
+
+            <div class="category-header">📋 Procurement & Tendering</div>
+            <div class="documents-grid">
+                <div class="document-card" data-name="request for quotation">
+                    <h3>Request for Quotation</h3>
+                    <div class="doc-name">UBL-RequestForQuotation-2.1.xsd</div>
+                    <p>Request for price quotation from suppliers.</p>
+                    <div class="doc-size">Size: 31,637 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-RequestForQuotation-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="quotation">
+                    <h3>Quotation</h3>
+                    <div class="doc-name">UBL-Quotation-2.1.xsd</div>
+                    <p>Price quotation in response to RFQ.</p>
+                    <div class="doc-size">Size: 34,852 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Quotation-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="call for tenders">
+                    <h3>Call for Tenders</h3>
+                    <div class="doc-name">UBL-CallForTenders-2.1.xsd</div>
+                    <p>Invitation to submit tender proposals.</p>
+                    <div class="doc-size">Size: 31,099 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CallForTenders-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="tender">
+                    <h3>Tender</h3>
+                    <div class="doc-name">UBL-Tender-2.1.xsd</div>
+                    <p>Tender submission document.</p>
+                    <div class="doc-size">Size: 27,780 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Tender-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+            </div>
+
+            <div class="category-header">💰 Financial Documents</div>
+            <div class="documents-grid">
+                <div class="document-card" data-name="statement">
+                    <h3>Statement</h3>
+                    <div class="doc-name">UBL-Statement-2.1.xsd</div>
+                    <p>Account statement document.</p>
+                    <div class="doc-size">Size: 35,682 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Statement-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="remittance advice">
+                    <h3>Remittance Advice</h3>
+                    <div class="doc-name">UBL-RemittanceAdvice-2.1.xsd</div>
+                    <p>Payment notification and details.</p>
+                    <div class="doc-size">Size: 34,395 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-RemittanceAdvice-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="reminder">
+                    <h3>Reminder</h3>
+                    <div class="doc-name">UBL-Reminder-2.1.xsd</div>
+                    <p>Payment reminder for overdue invoices.</p>
+                    <div class="doc-size">Size: 45,702 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Reminder-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="self billed invoice">
+                    <h3>Self-Billed Invoice</h3>
+                    <div class="doc-name">UBL-SelfBilledInvoice-2.1.xsd</div>
+                    <p>Invoice created by the buyer on behalf of the supplier.</p>
+                    <div class="doc-size">Size: 57,368 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-SelfBilledInvoice-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+            </div>
+
+            <div class="category-header">📨 Application & Status Documents</div>
+            <div class="documents-grid">
+                <div class="document-card" data-name="application response">
+                    <h3>Application Response</h3>
+                    <div class="doc-name">UBL-ApplicationResponse-2.1.xsd</div>
+                    <p>Generic response document for business processes.</p>
+                    <div class="doc-size">Size: 21,665 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ApplicationResponse-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="document status">
+                    <h3>Document Status</h3>
+                    <div class="doc-name">UBL-DocumentStatus-2.1.xsd</div>
+                    <p>Status information about a business document.</p>
+                    <div class="doc-size">Size: 20,761 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DocumentStatus-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+
+                <div class="document-card" data-name="exception notification">
+                    <h3>Exception Notification</h3>
+                    <div class="doc-name">UBL-ExceptionNotification-2.1.xsd</div>
+                    <p>Notification of an exception in a business process.</p>
+                    <div class="doc-size">Size: 24,540 bytes</div>
+                    <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-ExceptionNotification-2.1.xsd" target="_blank">View Schema →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>UBL 2.1 Documentation | Maintained by OASIS</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Original schemas: <a href="https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/" style="color: #a0c4ff;">OASIS UBL 2.1</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const allCards = document.querySelectorAll('.document-card');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+
+            allCards.forEach(card => {
+                const cardName = card.getAttribute('data-name') || '';
+                const cardText = card.textContent.toLowerCase();
+
+                if (cardText.includes(searchTerm) || cardName.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
